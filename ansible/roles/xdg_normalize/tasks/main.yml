@@ -1,0 +1,217 @@
+---
+# ansible/roles/xdg_normalize/tasks/main.yml
+# XDG非準拠で作成されたディレクトリをXDG配下へ正規化
+
+- name: XDG用ディレクトリを作成
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - .config
+    - .cache
+    - .local
+    - .local/share
+    - .local/state
+    - .cache/ansible
+    - .cache/ansible/tmp
+    - .cache/Homebrew
+    - .cache/mise
+    - .config/docker
+    - .config/mise
+    - .local/state/Homebrew
+    - .local/state/Homebrew/logs
+    - .local/share/ansible
+    - .local/share/android
+    - .local/share/gradle
+    - .local/share/mise
+    - .local/share/vscode
+    - .local/share/vscode/user-data
+    - .local/share/vscode/extensions
+
+- name: HomebrewキャッシュをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/Library/Caches/Homebrew"
+    target="{{ ansible_facts['env']['HOME'] }}/.cache/Homebrew"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_homebrew_cache
+  changed_when: "'migrated' in migrate_homebrew_cache.stdout or 'removed_legacy_symlink' in migrate_homebrew_cache.stdout"
+
+- name: AnsibleホームディレクトリをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.ansible"
+    target="{{ ansible_facts['env']['HOME'] }}/.local/share/ansible"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_ansible_home
+  changed_when: "'migrated' in migrate_ansible_home.stdout or 'removed_legacy_symlink' in migrate_ansible_home.stdout"
+
+- name: AndroidユーザーディレクトリをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.android"
+    target="{{ ansible_facts['env']['HOME'] }}/.local/share/android"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_android_home
+  changed_when: "'migrated' in migrate_android_home.stdout or 'removed_legacy_symlink' in migrate_android_home.stdout"
+
+- name: GradleホームディレクトリをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.gradle"
+    target="{{ ansible_facts['env']['HOME'] }}/.local/share/gradle"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_gradle_home
+  changed_when: "'migrated' in migrate_gradle_home.stdout or 'removed_legacy_symlink' in migrate_gradle_home.stdout"
+
+- name: VS Code user dataをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/Library/Application Support/Code"
+    target="{{ ansible_facts['env']['HOME'] }}/.local/share/vscode/user-data"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_vscode_user_data
+  changed_when: "'migrated' in migrate_vscode_user_data.stdout or 'removed_legacy_symlink' in migrate_vscode_user_data.stdout"
+
+- name: VS Code extensionsをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.vscode/extensions"
+    target="{{ ansible_facts['env']['HOME'] }}/.local/share/vscode/extensions"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_vscode_extensions
+  changed_when: "'migrated' in migrate_vscode_extensions.stdout or 'removed_legacy_symlink' in migrate_vscode_extensions.stdout"
+
+- name: Docker設定ディレクトリをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.docker"
+    target="{{ ansible_facts['env']['HOME'] }}/.config/docker"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_docker_config
+  changed_when: "'migrated' in migrate_docker_config.stdout or 'removed_legacy_symlink' in migrate_docker_config.stdout"
+
+- name: miseホームディレクトリをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.mise"
+    target="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_mise_home
+  changed_when: "'migrated' in migrate_mise_home.stdout or 'removed_legacy_symlink' in migrate_mise_home.stdout"
+
+- name: hadolint設定ファイルをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.hadolint.yaml"
+    target="{{ ansible_facts['env']['HOME'] }}/.config/hadolint.yaml"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -f "$legacy" ]; then
+      cp -a "$legacy" "$target"
+      rm -f "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_hadolint_config
+  changed_when: "'migrated' in migrate_hadolint_config.stdout or 'removed_legacy_symlink' in migrate_hadolint_config.stdout"

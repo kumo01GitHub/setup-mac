@@ -25,7 +25,8 @@ setup-mac/
 │   └── roles/
 │       ├── homebrew/   # Homebrew・パッケージインストール
 │       ├── macos/      # macOSシステム設定
-│       └── dotfiles/   # dotfilesのシンボリックリンク設定
+│       ├── dotfiles/   # dotfilesのシンボリックリンク設定
+│       └── xdg_normalize/ # XDG非準拠ディレクトリの正規化
 └── README.md
 ```
 
@@ -57,6 +58,7 @@ Ansible を使うと以下の作業をまとめて自動化できます。
 - 開発ツール・アプリのインストール（`brew` / `brew cask`）
 - macOS システム設定の変更
 - dotfiles のシンボリックリンク作成
+- XDG非準拠で作成済みのディレクトリをXDG配下へ正規化
 
 #### 2-1. Ansible のインストール
 
@@ -156,6 +158,26 @@ Ansible 実行時に以下の設定が適用されます。
 - Dock の自動非表示を有効化
 - Finder で隠しファイルを表示
 - ファイル拡張子を常に表示
+
+---
+
+## 🧹 XDG 正規化
+
+プレイブック実行時に `xdg_normalize` ロールで、既に作成されてしまった非XDGディレクトリをXDG配下へ移設し、旧パスは削除します。
+
+- `~/Library/Caches/Homebrew` → `~/.cache/Homebrew`（移設後に旧パス削除）
+- `~/.ansible` → `~/.local/share/ansible`（移設後に旧パス削除）
+- `~/.android` → `~/.local/share/android`（移設後に旧パス削除）
+- `~/.gradle` → `~/.local/share/gradle`（移設後に旧パス削除）
+- `~/.docker` → `~/.config/docker`（移設後に旧パス削除）
+- `~/.mise` → `~/.local/share/mise`（移設後に旧パス削除）
+- `~/.hadolint.yaml` → `~/.config/hadolint.yaml`（移設後に旧パス削除）
+- `~/Library/Application Support/Code` → `~/.local/share/vscode/user-data`（移設後に旧パス削除）
+- `~/.vscode/extensions` → `~/.local/share/vscode/extensions`（移設後に旧パス削除）
+
+旧パスへのシンボリックリンクは作成しません。厳格にXDG準拠へ寄せる方針です。
+
+`code` コマンドは `.zshrc` のラッパー関数により、`--user-data-dir` と `--extensions-dir` をXDGパスで起動します。
 
 ---
 
