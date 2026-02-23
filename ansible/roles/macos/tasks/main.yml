@@ -1,0 +1,34 @@
+---
+# ansible/roles/macos/tasks/main.yml
+# macOSのシステム設定
+
+- name: Dockの自動非表示を有効化
+  osx_defaults:
+    domain: com.apple.dock
+    key: autohide
+    type: bool
+    value: true
+
+- name: Finderで隠しファイルを表示
+  osx_defaults:
+    domain: com.apple.finder
+    key: AppleShowAllFiles
+    type: bool
+    value: true
+
+- name: ファイル拡張子を常に表示
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: AppleShowAllExtensions
+    type: bool
+    value: true
+
+- name: Dockを再起動して設定を反映
+  command: /usr/bin/killall Dock
+  changed_when: false
+  ignore_errors: true
+
+- name: Finderを再起動して設定を反映
+  command: /usr/bin/killall Finder
+  changed_when: false
+  ignore_errors: true

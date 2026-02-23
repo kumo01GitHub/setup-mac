@@ -1,0 +1,51 @@
+---
+# ansible/roles/homebrew/tasks/main.yml
+# Homebrewとパッケージのインストール
+
+- name: Homebrewがインストールされているか確認
+  command: which brew
+  register: brew_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Homebrewをインストール
+  shell: |
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  when: brew_check.rc != 0
+
+- name: brewパッケージをインストール
+  homebrew:
+    name: "{{ item }}"
+    state: present
+    path: /opt/homebrew/bin
+  loop:
+    - git
+    - curl
+    - tree
+    - ansible
+    - eza
+    - lcov
+    - docker-compose
+    - hadolint
+    - starship
+    - mise
+    - delta
+
+- name: Homebrew tapを追加
+  homebrew_tap:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - homebrew/cask-fonts
+
+- name: brew caskアプリをインストール
+  homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - visual-studio-code
+    - wezterm
+    - google-chrome
+    - docker
+    - font-fira-code-nerd-font
+    - android-studio

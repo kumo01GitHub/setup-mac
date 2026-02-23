@@ -1,0 +1,32 @@
+---
+# ansible/roles/dotfiles/tasks/main.yml
+# dotfilesのシンボリックリンクを作成
+
+- name: dotfilesディレクトリのパスを設定
+  set_fact:
+    dotfiles_dir: "{{ playbook_dir }}/../dotfiles"
+
+- name: dotfilesの親ディレクトリを作成
+  file:
+    path: "{{ (ansible_facts['env']['HOME'] ~ '/' ~ item) | dirname }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - .zshrc
+    - .gitconfig
+    - .config/git/config
+    - .config/wezterm/wezterm.lua
+    - .config/starship.toml
+
+- name: dotfilesのシンボリックリンクを作成
+  file:
+    src: "{{ dotfiles_dir }}/{{ item }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+    state: link
+    force: true
+  loop:
+    - .zshrc
+    - .gitconfig
+    - .config/git/config
+    - .config/wezterm/wezterm.lua
+    - .config/starship.toml

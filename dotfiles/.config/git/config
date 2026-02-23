@@ -1,0 +1,23 @@
+[core]
+    autocrlf = input
+    editor = code --wait
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    side-by-side = true
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    lg = log --oneline --graph --decorate --all
+
+[pull]
+    rebase = false
+
+[init]
+    defaultBranch = main
