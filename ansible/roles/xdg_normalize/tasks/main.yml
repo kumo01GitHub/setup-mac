@@ -17,14 +17,24 @@
     - .cache/ansible/tmp
     - .cache/Homebrew
     - .cache/mise
+    - .cache/npm
+    - .cache/pip
+    - .cache/python
+    - .cache/python/pycache
+    - .cache/gem
+    - .cache/gem/specs
     - .config/docker
     - .config/mise
+    - .config/npm
+    - .config/pip
     - .local/state/Homebrew
     - .local/state/Homebrew/logs
     - .local/share/ansible
     - .local/share/android
+    - .local/share/cocoapods
     - .local/share/gradle
     - .local/share/mise
+    - .local/share/npm
     - .local/share/vscode
     - .local/share/vscode/user-data
     - .local/share/vscode/extensions
@@ -215,3 +225,127 @@
     executable: /bin/bash
   register: migrate_hadolint_config
   changed_when: "'migrated' in migrate_hadolint_config.stdout or 'removed_legacy_symlink' in migrate_hadolint_config.stdout"
+
+- name: npmキャッシュディレクトリをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.npm"
+    target="{{ ansible_facts['env']['HOME'] }}/.cache/npm"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_npm_cache
+  changed_when: "'migrated' in migrate_npm_cache.stdout or 'removed_legacy_symlink' in migrate_npm_cache.stdout"
+
+- name: npm設定ファイルをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.npmrc"
+    target="{{ ansible_facts['env']['HOME'] }}/.config/npm/npmrc"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -f "$legacy" ]; then
+      cp -a "$legacy" "$target"
+      rm -f "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_npmrc
+  changed_when: "'migrated' in migrate_npmrc.stdout or 'removed_legacy_symlink' in migrate_npmrc.stdout"
+
+- name: pipレガシーディレクトリをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.pip"
+    target="{{ ansible_facts['env']['HOME'] }}/.config/pip"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_pip_legacy
+  changed_when: "'migrated' in migrate_pip_legacy.stdout or 'removed_legacy_symlink' in migrate_pip_legacy.stdout"
+
+- name: pipキャッシュディレクトリをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/Library/Caches/pip"
+    target="{{ ansible_facts['env']['HOME'] }}/.cache/pip"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_pip_cache
+  changed_when: "'migrated' in migrate_pip_cache.stdout or 'removed_legacy_symlink' in migrate_pip_cache.stdout"
+
+- name: RubyGemsキャッシュをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.gem"
+    target="{{ ansible_facts['env']['HOME'] }}/.cache/gem"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_gem_cache
+  changed_when: "'migrated' in migrate_gem_cache.stdout or 'removed_legacy_symlink' in migrate_gem_cache.stdout"
+
+- name: CocoaPodsホームをXDG配下へ移設
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.cocoapods"
+    target="{{ ansible_facts['env']['HOME'] }}/.local/share/cocoapods"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_cocoapods_home
+  changed_when: "'migrated' in migrate_cocoapods_home.stdout or 'removed_legacy_symlink' in migrate_cocoapods_home.stdout"

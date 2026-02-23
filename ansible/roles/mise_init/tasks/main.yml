@@ -1,0 +1,115 @@
+---
+# ansible/roles/mise_init/tasks/main.yml
+# mise初期化とRuby/CocoaPodsセットアップ
+
+- name: miseが利用可能か確認
+  command: /opt/homebrew/bin/mise --version
+  changed_when: false
+
+- name: miseでRubyをインストールしてグローバル利用に設定
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    mkdir -p "$MISE_DATA_DIR" "$MISE_CACHE_DIR" "$MISE_CONFIG_DIR"
+
+    if ! /opt/homebrew/bin/mise where ruby@latest >/dev/null 2>&1; then
+      /opt/homebrew/bin/mise install ruby@latest
+      echo installed_ruby
+    fi
+
+    /opt/homebrew/bin/mise use -g ruby@latest >/dev/null
+  args:
+    executable: /bin/bash
+  register: ruby_mise_setup
+  changed_when: "'installed_ruby' in ruby_mise_setup.stdout"
+
+- name: miseでNode.jsをインストールしてグローバル利用に設定
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    if ! /opt/homebrew/bin/mise where node@latest >/dev/null 2>&1; then
+      /opt/homebrew/bin/mise install node@latest
+      echo installed_node
+    fi
+
+    /opt/homebrew/bin/mise use -g node@latest >/dev/null
+  args:
+    executable: /bin/bash
+  register: node_mise_setup
+  changed_when: "'installed_node' in node_mise_setup.stdout"
+
+- name: miseでPythonをインストールしてグローバル利用に設定
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    if ! /opt/homebrew/bin/mise where python@latest >/dev/null 2>&1; then
+      /opt/homebrew/bin/mise install python@latest
+      echo installed_python
+    fi
+
+    /opt/homebrew/bin/mise use -g python@latest >/dev/null
+  args:
+    executable: /bin/bash
+  register: python_mise_setup
+  changed_when: "'installed_python' in python_mise_setup.stdout"
+
+- name: miseでJavaをインストールしてグローバル利用に設定
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    if ! /opt/homebrew/bin/mise where java@latest >/dev/null 2>&1; then
+      /opt/homebrew/bin/mise install java@latest
+      echo installed_java
+    fi
+
+    /opt/homebrew/bin/mise use -g java@latest >/dev/null
+  args:
+    executable: /bin/bash
+  register: java_mise_setup
+  changed_when: "'installed_java' in java_mise_setup.stdout"
+
+- name: miseでGradleをインストールしてグローバル利用に設定
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    if ! /opt/homebrew/bin/mise where gradle@latest >/dev/null 2>&1; then
+      /opt/homebrew/bin/mise install gradle@latest
+      echo installed_gradle
+    fi
+
+    /opt/homebrew/bin/mise use -g gradle@latest >/dev/null
+  args:
+    executable: /bin/bash
+  register: gradle_mise_setup
+  changed_when: "'installed_gradle' in gradle_mise_setup.stdout"
+
+- name: CocoaPodsをmise管理Rubyにインストール
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    if ! /opt/homebrew/bin/mise exec ruby@latest -- pod --version >/dev/null 2>&1; then
+      /opt/homebrew/bin/mise exec ruby@latest -- gem install --no-document cocoapods
+      echo installed_cocoapods
+    fi
+  args:
+    executable: /bin/bash
+  register: cocoapods_install
+  changed_when: "'installed_cocoapods' in cocoapods_install.stdout"

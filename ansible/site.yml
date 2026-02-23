@@ -9,6 +9,7 @@
 
   roles:
     - homebrew
+    - mise_init
     - macos
     - dotfiles
     - xdg_normalize

@@ -24,6 +24,7 @@ setup-mac/
 │   ├── site.yml        # メインプレイブック
 │   └── roles/
 │       ├── homebrew/   # Homebrew・パッケージインストール
+│       ├── mise_init/  # mise初期化 + Node/Python/Java/Ruby/CocoaPodsセットアップ
 │       ├── macos/      # macOSシステム設定
 │       ├── dotfiles/   # dotfilesのシンボリックリンク設定
 │       └── xdg_normalize/ # XDG非準拠ディレクトリの正規化
@@ -135,6 +136,7 @@ Git の詳細設定は `dotfiles/.config/git/config` を編集してください
 | hadolint | Dockerfileリンター |
 | starship | クロスシェルプロンプト |
 | mise | 開発ツールバージョン管理 |
+| cocoapods | iOS依存管理ツール |
 | delta | 差分ビューア |
 | sheldon | Zshプラグインマネージャー |
 
@@ -172,12 +174,18 @@ Ansible 実行時に以下の設定が適用されます。
 - `~/.docker` → `~/.config/docker`（移設後に旧パス削除）
 - `~/.mise` → `~/.local/share/mise`（移設後に旧パス削除）
 - `~/.hadolint.yaml` → `~/.config/hadolint.yaml`（移設後に旧パス削除）
+- `~/.npm` / `~/.npmrc` → `~/.cache/npm` / `~/.config/npm/npmrc`（移設後に旧パス削除）
+- `~/.pip` / `~/Library/Caches/pip` → `~/.config/pip` / `~/.cache/pip`（移設後に旧パス削除）
+- `~/.gem` → `~/.cache/gem`（移設後に旧パス削除）
+- `~/.cocoapods` → `~/.local/share/cocoapods`（移設後に旧パス削除）
 - `~/Library/Application Support/Code` → `~/.local/share/vscode/user-data`（移設後に旧パス削除）
 - `~/.vscode/extensions` → `~/.local/share/vscode/extensions`（移設後に旧パス削除）
 
 旧パスへのシンボリックリンクは作成しません。厳格にXDG準拠へ寄せる方針です。
 
 `code` コマンドは `.zshrc` のラッパー関数により、`--user-data-dir` と `--extensions-dir` をXDGパスで起動します。
+
+Node/Python/Java/Gradle/Ruby は `mise` で管理し、`cocoapods` は `mise` 管理Rubyの `gem` としてインストールします。npm/pip/RubyGems/CocoaPods の設定・キャッシュも XDG パスへ寄せています。
 
 ---
 
