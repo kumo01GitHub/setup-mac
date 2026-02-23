@@ -15,6 +15,8 @@ setup-mac/
 │   ├── .config/
 │   │   ├── git/
 │   │   │   └── config  # GitのXDG設定
+│   │   ├── sheldon/
+│   │   │   └── plugins.toml # Zshプラグイン設定
 │   │   ├── wezterm/
 │   │   │   └── wezterm.lua # WezTermの設定
 │   │   └── starship.toml # Starshipの設定
@@ -132,6 +134,7 @@ Git の詳細設定は `dotfiles/.config/git/config` を編集してください
 | starship | クロスシェルプロンプト |
 | mise | 開発ツールバージョン管理 |
 | delta | 差分ビューア |
+| sheldon | Zshプラグインマネージャー |
 
 ### アプリケーション（brew cask）
 

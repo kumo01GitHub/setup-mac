@@ -30,6 +30,7 @@
     - starship
     - mise
     - delta
+    - sheldon
 
 - name: Homebrew tapを追加
   homebrew_tap:

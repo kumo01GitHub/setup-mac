@@ -15,6 +15,7 @@
     - .zshrc
     - .gitconfig
     - .config/git/config
+    - .config/sheldon/plugins.toml
     - .config/wezterm/wezterm.lua
     - .config/starship.toml
 
@@ -28,5 +29,6 @@
     - .zshrc
     - .gitconfig
     - .config/git/config
+    - .config/sheldon/plugins.toml
     - .config/wezterm/wezterm.lua
     - .config/starship.toml
