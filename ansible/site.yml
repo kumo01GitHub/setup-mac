@@ -9,6 +9,7 @@
 
   roles:
     - homebrew
+    - vscode_extensions
     - mise_init
     - macos
     - dotfiles

@@ -24,6 +24,7 @@ setup-mac/
 │   ├── site.yml        # メインプレイブック
 │   └── roles/
 │       ├── homebrew/   # Homebrew・パッケージインストール
+│       ├── vscode_extensions/ # VS Code拡張機能のインストール
 │       ├── mise_init/  # mise初期化 + Node/Python/Java/Ruby/CocoaPodsセットアップ
 │       ├── macos/      # macOSシステム設定
 │       ├── dotfiles/   # dotfilesのシンボリックリンク設定
@@ -150,6 +151,17 @@ Git の詳細設定は `dotfiles/.config/git/config` を編集してください
 | Docker | コンテナ実行環境 |
 | FiraCode Nerd Font | 開発用フォント |
 | Android Studio | Android IDE |
+
+### VS Code拡張機能（Ansibleロール）
+
+| 拡張機能 | ID |
+|---------|----|
+| EditorConfig | `EditorConfig.EditorConfig` |
+| indent-rainbow | `oderwat.indent-rainbow` |
+| Prettier | `esbenp.prettier-vscode` |
+| Swift | `swiftlang.swift-vscode` |
+| Java Extension Pack | `vscjava.vscode-java-pack` |
+| Gradle for Java | `vscjava.vscode-gradle` |
 
 ---
 
