@@ -32,13 +32,6 @@
     - delta
     - sheldon
 
-- name: Homebrew tapを追加
-  homebrew_tap:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - homebrew/cask-fonts
-
 - name: brew caskアプリをインストール
   homebrew_cask:
     name: "{{ item }}"
