@@ -1,0 +1,16 @@
+---
+# ansible/site.yml
+# Main playbook for macOS setup
+
+- name: Mac Setup
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  roles:
+    - homebrew
+    - vscode_extensions
+    - mise
+    - macos
+    - dotfiles
+    - xdg_normalize

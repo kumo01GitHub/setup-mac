@@ -1,0 +1,76 @@
+---
+# ansible/roles/mise/tasks/main.yml
+# Initialize mise and set up development toolchains
+
+- name: Check mise availability
+  command: /opt/homebrew/bin/mise --version
+  changed_when: false
+
+- name: Ensure mise directories exist
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - .local/share/mise
+    - .cache/mise
+    - .config/mise
+
+- name: Ensure mise plugins are installed
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    if ! /opt/homebrew/bin/mise plugins ls | awk '{print $1}' | grep -Fxq "{{ item }}"; then
+      /opt/homebrew/bin/mise plugins add "{{ item }}"
+      echo installed_plugin
+    fi
+  args:
+    executable: /bin/bash
+  register: mise_plugins_setup
+  changed_when: "'installed_plugin' in mise_plugins_setup.stdout"
+  loop: "{{ mise_plugins }}"
+
+- name: Install toolchains via mise and set global versions
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    tool="{{ item }}"
+    activate_tool="$tool"
+
+    if [[ "$tool" == flutter@* ]]; then
+      activate_tool="flutter"
+    fi
+
+    if ! /opt/homebrew/bin/mise where "$tool" >/dev/null 2>&1; then
+      /opt/homebrew/bin/mise install "$tool"
+      echo installed
+    fi
+
+    /opt/homebrew/bin/mise use -g "$activate_tool" >/dev/null
+  args:
+    executable: /bin/bash
+  register: mise_toolchain_setup
+  changed_when: "'installed' in mise_toolchain_setup.stdout"
+  loop: "{{ mise_toolchains }}"
+
+- name: Install CocoaPods into mise-managed Ruby
+  shell: |
+    set -eu
+    export MISE_DATA_DIR="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
+    export MISE_CACHE_DIR="{{ ansible_facts['env']['HOME'] }}/.cache/mise"
+    export MISE_CONFIG_DIR="{{ ansible_facts['env']['HOME'] }}/.config/mise"
+
+    if ! /opt/homebrew/bin/mise exec ruby@latest -- pod --version >/dev/null 2>&1; then
+      /opt/homebrew/bin/mise exec ruby@latest -- gem install --no-document cocoapods
+      echo installed_cocoapods
+    fi
+  args:
+    executable: /bin/bash
+  register: cocoapods_install
+  changed_when: "'installed_cocoapods' in cocoapods_install.stdout"

@@ -1,0 +1,11 @@
+---
+# ansible/roles/macos/defaults/main.yml
+
+macos_dock_apps:
+  - /System/Applications/Apps.app
+  - /System/Applications/System Settings.app
+  - /System/Applications/Passwords.app
+  - /System/Applications/Calendar.app
+  - /System/Applications/Mail.app
+  - /System/Applications/App Store.app
+  - /Applications/Safari.app

@@ -1,0 +1,28 @@
+---
+# ansible/roles/vscode_extensions/tasks/main.yml
+# Install Visual Studio Code extensions
+
+- name: Detect VS Code CLI path
+  shell: |
+    set -eu
+    if command -v code >/dev/null 2>&1; then
+      command -v code
+    elif [ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]; then
+      echo "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+    else
+      exit 1
+    fi
+  args:
+    executable: /bin/bash
+  register: vscode_cli
+  changed_when: false
+
+- name: Install VS Code extensions
+  shell: |
+    set -eu
+    "{{ vscode_cli.stdout }}" --install-extension "{{ item }}"
+  args:
+    executable: /bin/bash
+  loop: "{{ vscode_extensions_list }}"
+  register: vscode_extensions_install
+  changed_when: "'successfully installed' in (vscode_extensions_install.stdout | lower)"

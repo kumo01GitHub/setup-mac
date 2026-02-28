@@ -1,0 +1,53 @@
+---
+# ansible/roles/dotfiles/tasks/main.yml
+# Copy dotfiles to home directory
+
+- name: Set dotfiles directory path
+  set_fact:
+    dotfiles_dir: "{{ playbook_dir }}/../dotfiles"
+
+- name: Create parent directories for dotfiles
+  file:
+    path: "{{ (ansible_facts['env']['HOME'] ~ '/' ~ item) | dirname }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - .zshrc
+    - .gitconfig
+    - .config/git/config
+    - .config/sheldon/plugins.toml
+    - .config/wezterm/wezterm.lua
+    - .config/starship.toml
+
+- name: Collect current dotfile destination stats
+  stat:
+    path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+  loop:
+    - .zshrc
+    - .gitconfig
+    - .config/git/config
+    - .config/sheldon/plugins.toml
+    - .config/wezterm/wezterm.lua
+    - .config/starship.toml
+  register: dotfile_destination_stats
+
+- name: Remove existing dotfile symlinks
+  file:
+    path: "{{ item.stat.path }}"
+    state: absent
+  loop: "{{ dotfile_destination_stats.results }}"
+  when: item.stat.islnk | default(false)
+
+- name: Copy dotfiles to home directory
+  copy:
+    src: "{{ dotfiles_dir }}/{{ item }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+    force: true
+    mode: preserve
+  loop:
+    - .zshrc
+    - .gitconfig
+    - .config/git/config
+    - .config/sheldon/plugins.toml
+    - .config/wezterm/wezterm.lua
+    - .config/starship.toml

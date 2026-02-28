@@ -1,0 +1,13 @@
+---
+# ansible/roles/mise/defaults/main.yml
+
+mise_plugins:
+  - flutter
+
+mise_toolchains:
+  - ruby@latest
+  - node@latest
+  - python@latest
+  - java@latest
+  - gradle@latest
+  - flutter@latest

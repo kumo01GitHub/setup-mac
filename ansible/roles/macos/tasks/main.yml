@@ -1,0 +1,71 @@
+---
+# ansible/roles/macos/tasks/main.yml
+# Configure macOS system settings
+
+- name: Enable Dock auto-hide
+  osx_defaults:
+    domain: com.apple.dock
+    key: autohide
+    type: bool
+    value: true
+
+- name: Configure Dock apps
+  shell: |
+    set -eu
+    export PATH="/opt/homebrew/bin:$PATH"
+
+    dockutil --no-restart --remove all
+
+    for app in {% for app in macos_dock_apps %}"{{ app }}" {% endfor %}; do
+      if [ -d "$app" ]; then
+        dockutil --no-restart --add "$app"
+      fi
+    done
+  args:
+    executable: /bin/bash
+  changed_when: true
+
+- name: Show hidden files in Finder
+  osx_defaults:
+    domain: com.apple.finder
+    key: AppleShowAllFiles
+    type: bool
+    value: true
+
+- name: Always show file extensions
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: AppleShowAllExtensions
+    type: bool
+    value: true
+
+- name: Disable natural mouse scrolling
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: com.apple.swipescrolldirection
+    type: bool
+    value: false
+
+- name: Show pinned apps in Dock
+  osx_defaults:
+    domain: com.apple.dock
+    key: static-only
+    type: bool
+    value: false
+
+- name: Hide recent apps in Dock
+  osx_defaults:
+    domain: com.apple.dock
+    key: show-recents
+    type: bool
+    value: false
+
+- name: Restart Dock to apply settings
+  command: /usr/bin/killall Dock
+  changed_when: false
+  ignore_errors: true
+
+- name: Restart Finder to apply settings
+  command: /usr/bin/killall Finder
+  changed_when: false
+  ignore_errors: true

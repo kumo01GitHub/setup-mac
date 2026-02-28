@@ -1,0 +1,31 @@
+---
+# ansible/roles/homebrew/defaults/main.yml
+
+homebrew_packages:
+  - git
+  - curl
+  - bat
+  - dockutil
+  - tree
+  - ansible
+  - eza
+  - lcov
+  - jq
+  - docker-compose
+  - hadolint
+  - starship
+  - mise
+  - delta
+  - sheldon
+
+homebrew_docker_cask_directories:
+  - /usr/local/bin
+  - /usr/local/cli-plugins
+
+homebrew_cask_apps:
+  - visual-studio-code
+  - wezterm
+  - google-chrome
+  - docker
+  - font-fira-code-nerd-font
+  - android-studio

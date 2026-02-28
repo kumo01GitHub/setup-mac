@@ -1,0 +1,211 @@
+# setup-mac
+
+Languages: [English](README.md) | [日本語](README.ja.md)
+
+This repository sets up a macOS development environment.  
+It combines dotfiles and Ansible so you can bootstrap a new Mac quickly and consistently.
+
+---
+
+## 📁 Directory Structure
+
+```
+setup-mac/
+├── dotfiles/           # Configuration files
+│   ├── .zshrc
+│   ├── .gitconfig
+│   ├── .config/
+│   │   ├── git/
+│   │   │   └── config
+│   │   ├── sheldon/
+│   │   │   └── plugins.toml
+│   │   ├── wezterm/
+│   │   │   └── wezterm.lua
+│   │   └── starship.toml
+├── ansible/            # Ansible playbooks
+│   ├── site.yml
+│   └── roles/
+│       ├── homebrew/
+│       ├── vscode_extensions/
+│       ├── mise/       # Toolchain setup via mise
+│       ├── macos/
+│       ├── dotfiles/
+│       └── xdg_normalize/
+├── README.md
+└── README.ja.md
+```
+
+---
+
+## 🚀 Usage
+
+### Prerequisites
+
+- macOS (Apple Silicon and Intel supported)
+- Internet connection
+
+---
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/kumo01GitHub/setup-mac.git ~/setup-mac
+cd ~/setup-mac
+```
+
+---
+
+### 2. Install Homebrew / Ansible
+
+Install Homebrew:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Install Ansible:
+
+```bash
+brew install ansible
+```
+
+### 3. Run the Ansible playbook
+
+```bash
+cd ~/setup-mac/ansible
+ansible-playbook site.yml
+```
+
+If a task requires elevated privileges (for example, installing the `docker` cask), include `--ask-become-pass`:
+
+```bash
+ansible-playbook site.yml --ask-become-pass
+```
+
+### Add dotfiles
+
+1. Add files under `dotfiles/`
+2. Add each target file to the `loop` in `ansible/roles/dotfiles/tasks/main.yml`
+
+### Edit `.zshrc`
+
+Edit `dotfiles/.zshrc` for shell customization.  
+This is where you can tune aliases, PATH, history behavior, and XDG-related environment variables.
+
+To apply changes, open a new terminal or run:
+
+```bash
+source ~/.zshrc
+```
+
+### Update Git identity
+
+Set your name and email in `dotfiles/.gitconfig` (`[user]` section).  
+For advanced Git settings, edit `dotfiles/.config/git/config`.
+
+```ini
+[user]
+    name = Your Name
+    email = your.email@example.com
+```
+
+---
+
+## 📦 Main Installed Items
+
+### CLI tools (`brew`)
+
+| Package | Description |
+|---------|-------------|
+| [git](https://git-scm.com/) | Version control |
+| [curl](https://curl.se/) | HTTP client |
+| [bat](https://github.com/sharkdp/bat) | `cat` alternative with syntax highlighting |
+| [dockutil](https://github.com/kcrawford/dockutil) | Dock item management |
+| [tree](https://gitlab.com/OldManProgrammer/unix-tree) | Directory tree viewer |
+| [ansible](https://www.ansible.com/) | Configuration management |
+| [eza](https://github.com/eza-community/eza) | Modern `ls` alternative |
+| [lcov](https://github.com/linux-test-project/lcov) | Coverage measurement tool |
+| [jq](https://jqlang.org/) | JSON processor |
+| [docker-compose](https://docs.docker.com/compose/) | Container orchestration |
+| [hadolint](https://github.com/hadolint/hadolint) | Dockerfile linter |
+| [starship](https://starship.rs/) | Cross-shell prompt |
+| [mise](https://mise.jdx.dev/) | Runtime/version manager |
+| [delta](https://github.com/dandavison/delta) | Git diff viewer |
+| [sheldon](https://github.com/rossmacarthur/sheldon) | Zsh plugin manager |
+
+### Applications (`brew cask`)
+
+| Application | Description |
+|-------------|-------------|
+| [Visual Studio Code](https://code.visualstudio.com/) | Code editor |
+| [WezTerm](https://wezfurlong.org/wezterm/) | Terminal emulator |
+| [Google Chrome](https://www.google.com/chrome/) | Web browser |
+| [Docker](https://www.docker.com/) | Container runtime |
+| [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads) | Development font |
+| [Android Studio](https://developer.android.com/studio) | Android IDE |
+
+### VS Code extensions (installed via `code` CLI)
+
+| Extension | ID |
+|-----------|----|
+| EditorConfig | `EditorConfig.EditorConfig` |
+| indent-rainbow | `oderwat.indent-rainbow` |
+| Prettier | `esbenp.prettier-vscode` |
+| ESLint | `dbaeumer.vscode-eslint` |
+| Python | `ms-python.python` |
+| Pylance | `ms-python.vscode-pylance` |
+| Dart | `Dart-Code.dart-code` |
+| Flutter | `Dart-Code.flutter` |
+| Kotlin | `fwcd.kotlin` |
+| Swift | `swiftlang.swift-vscode` |
+| Java Extension Pack | `vscjava.vscode-java-pack` |
+| Gradle for Java | `vscjava.vscode-gradle` |
+| Spring Boot Tools | `vmware.vscode-spring-boot` |
+| YAML | `redhat.vscode-yaml` |
+| XML | `redhat.vscode-xml` |
+
+### Toolchains managed by `mise`
+
+- [`ruby@latest`](https://www.ruby-lang.org/)
+- [`node@latest`](https://nodejs.org/)
+- [`python@latest`](https://www.python.org/)
+- [`java@latest`](https://openjdk.org/)
+- [`gradle@latest`](https://gradle.org/)
+- [`flutter@latest`](https://flutter.dev/)
+
+---
+
+## 🖥️ macOS System Preferences
+
+The playbook applies the following settings:
+
+- Enable Dock auto-hide
+- Rebuild Dock items from the app list defined in `ansible/roles/macos/tasks/main.yml`
+- Hide recent apps in Dock (non-pinned apps disappear when closed)
+- Show hidden files in Finder
+- Always show file extensions
+
+---
+
+## 🧹 XDG Normalization
+
+The `xdg_normalize` role migrates existing non-XDG paths into XDG-compliant locations and removes old paths.
+
+- `~/Library/Caches/Homebrew` → `~/.cache/Homebrew`
+- `~/.ansible` → `~/.local/share/ansible`
+- `~/.android` → `~/.local/share/android`
+- `~/.gradle` → `~/.local/share/gradle`
+- `~/.docker` → `~/.config/docker`
+- `~/.mise` → `~/.local/share/mise`
+- `~/.hadolint.yaml` → `~/.config/hadolint.yaml`
+- `~/.npm` / `~/.npmrc` → `~/.cache/npm` / `~/.config/npm/npmrc`
+- `~/.pub-cache` → `~/.cache/pub`
+- `~/.pip` / `~/Library/Caches/pip` → `~/.config/pip` / `~/.cache/pip`
+- `~/.gem` → `~/.cache/gem`
+- `~/.cocoapods` → `~/.local/share/cocoapods`
+
+---
+
+## 📄 License
+
+[MIT License](LICENSE)
