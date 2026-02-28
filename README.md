@@ -12,9 +12,11 @@ It combines dotfiles and Ansible so you can bootstrap a new Mac quickly and cons
 ```
 setup-mac/
 ├── dotfiles/           # Configuration files
-│   ├── .zshrc
+│   ├── .zshenv
 │   ├── .gitconfig
 │   ├── .config/
+│   │   ├── zsh/
+│   │   │   └── .zshrc
 │   │   ├── git/
 │   │   │   └── config
 │   │   ├── sheldon/
@@ -87,15 +89,15 @@ ansible-playbook site.yml --ask-become-pass
 1. Add files under `dotfiles/`
 2. Add each target file to the `loop` in `ansible/roles/dotfiles/tasks/main.yml`
 
-### Edit `.zshrc`
+### Edit `zsh` configuration
 
-Edit `dotfiles/.zshrc` for shell customization.  
-This is where you can tune aliases, PATH, history behavior, and XDG-related environment variables.
+Edit `dotfiles/.config/zsh/.zshrc` for shell customization.  
+`dotfiles/.zshenv` contains the minimal, early-loaded settings (XDG variables and `ZDOTDIR`).
 
 To apply changes, open a new terminal or run:
 
 ```bash
-source ~/.zshrc
+source ~/.config/zsh/.zshrc
 ```
 
 ### Update Git identity
@@ -203,6 +205,11 @@ The `xdg_normalize` role migrates existing non-XDG paths into XDG-compliant loca
 - `~/.pip` / `~/Library/Caches/pip` → `~/.config/pip` / `~/.cache/pip`
 - `~/.gem` → `~/.cache/gem`
 - `~/.cocoapods` → `~/.local/share/cocoapods`
+
+- `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` → `~/.config/zsh/`
+- `~/.zshenv` → `~/.config/zsh/.zshenv`
+- `~/.zsh_history` → `~/.local/state/zsh/history`
+- `~/.zcompdump*` → `~/.config/zsh/`
 
 ---
 

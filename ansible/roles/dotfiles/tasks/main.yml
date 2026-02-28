@@ -12,7 +12,8 @@
     state: directory
     mode: '0755'
   loop:
-    - .zshrc
+    - .zshenv
+    - .config/zsh/.zshrc
     - .gitconfig
     - .config/git/config
     - .config/sheldon/plugins.toml
@@ -23,7 +24,8 @@
   stat:
     path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
   loop:
-    - .zshrc
+    - .zshenv
+    - .config/zsh/.zshrc
     - .gitconfig
     - .config/git/config
     - .config/sheldon/plugins.toml
@@ -45,7 +47,8 @@
     force: true
     mode: preserve
   loop:
-    - .zshrc
+    - .zshenv
+    - .config/zsh/.zshrc
     - .gitconfig
     - .config/git/config
     - .config/sheldon/plugins.toml

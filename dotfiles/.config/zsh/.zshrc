@@ -1,15 +1,17 @@
-# .zshrc
+# .config/zsh/.zshrc
 
 # Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# XDG Base Directory
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+# Aliases
+alias cat='bat --style=plain --paging=never'
+alias ls='eza'
+alias ll='eza -la'
+alias la='eza -a'
+alias l='eza'
+alias diff='delta'
 
-# XDG preferred paths for tools
+# XDG preferred paths for tools (XDG variables are set in ~/.zshenv)
 
 # Homebrew
 export HOMEBREW_CACHE="${HOMEBREW_CACHE:-$XDG_CACHE_HOME/Homebrew}"
@@ -49,29 +51,13 @@ export CP_HOME_DIR="${CP_HOME_DIR:-$XDG_DATA_HOME/cocoapods}"
 # Flutter / Dart
 export PUB_CACHE="${PUB_CACHE:-$XDG_CACHE_HOME/pub}"
 
-# Ensure required XDG directories exist before tools run
-mkdir -p "$HOMEBREW_CACHE" "$HOMEBREW_LOGS" "$ANSIBLE_LOCAL_TEMP" "$ANDROID_USER_HOME" "$GRADLE_USER_HOME" "$DOCKER_CONFIG" "$MISE_DATA_DIR" "$MISE_CACHE_DIR" "$MISE_CONFIG_DIR" "$NPM_CONFIG_CACHE" "$NPM_CONFIG_PREFIX" "$(dirname "$NPM_CONFIG_USERCONFIG")" "$PIP_CACHE_DIR" "$(dirname "$PIP_CONFIG_FILE")" "$PYTHONPYCACHEPREFIX" "$GEM_SPEC_CACHE" "$CP_HOME_DIR" "$PUB_CACHE"
-mkdir -p "$(dirname "$HADOLINT_CONFIG")"
+# Ensure state dir for history exists
+mkdir -p "$XDG_STATE_HOME/zsh"
 
 # Path
-# npm global bin and local user bin
 export PATH="$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:$PATH"
 
-# mise
-# Enable shims for node/python/java/gradle/ruby managed by mise
-eval "$(mise activate zsh)"
-
-# Aliases
-alias cat='bat --style=plain --paging=never'
-alias ls='eza'
-alias ll='eza -la'
-alias la='eza -a'
-alias l='eza'
-alias diff='delta'
-
 # History
-# Store shell history under XDG state directory
-mkdir -p "$XDG_STATE_HOME/zsh"
 HISTFILE="$XDG_STATE_HOME/zsh/history"
 HISTSIZE=10000
 SAVEHIST=10000
@@ -84,3 +70,6 @@ eval "$(sheldon source)"
 
 # Prompt
 eval "$(starship init zsh)"
+
+# mise
+eval "$(mise activate zsh)"

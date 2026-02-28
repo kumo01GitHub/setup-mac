@@ -12,9 +12,11 @@ dotfiles（設定ファイル群）と Ansible を組み合わせて、新しい
 ```
 setup-mac/
 ├── dotfiles/           # 設定ファイル群
-│   ├── .zshrc          # Zshの設定
+│   ├── .zshenv         # Zshの早期設定（XDGとZDOTDIR）
 │   ├── .gitconfig      # Gitの設定
 │   ├── .config/
+│   │   ├── zsh/
+│   │   │   └── .zshrc  # Zshの設定
 │   │   ├── git/
 │   │   │   └── config  # GitのXDG設定
 │   │   ├── sheldon/
@@ -120,15 +122,15 @@ mise_toolchains:
 1. `dotfiles/` ディレクトリに設定ファイルを追加する
 2. `ansible/roles/dotfiles/tasks/main.yml` の `loop` にファイル名を追加する
 
-### `.zshrc` を編集する
+### `zsh` の設定を編集する
 
-シェル設定は `dotfiles/.zshrc` を編集してください。  
-主にエイリアス、PATH、履歴設定、XDG 関連の環境変数を調整できます。
+シェル設定は `dotfiles/.config/zsh/.zshrc` を編集してください。  
+`dotfiles/.zshenv` は Zsh 起動前に読み込まれる最小設定（XDG 変数と `ZDOTDIR` の設定）です。
 
 変更を反映するには、新しいターミナルを開くか以下を実行します。
 
 ```bash
-source ~/.zshrc
+source ~/.config/zsh/.zshrc
 ```
 
 ### Gitの設定を変更する
@@ -236,6 +238,11 @@ Ansible 実行時に以下の設定が適用されます。
 - `~/.pip` / `~/Library/Caches/pip` → `~/.config/pip` / `~/.cache/pip`
 - `~/.gem` → `~/.cache/gem`
 - `~/.cocoapods` → `~/.local/share/cocoapods`
+
+- `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` → `~/.config/zsh/`
+- `~/.zshenv` → `~/.config/zsh/.zshenv`
+- `~/.zsh_history` → `~/.local/state/zsh/history`
+- `~/.zcompdump*` → `~/.config/zsh/`
 
 ---
 

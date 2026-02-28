@@ -36,6 +36,9 @@
     - .local/share/gradle
     - .local/share/mise
     - .local/share/npm
+    - .config/zsh
+    - .local/state/zsh
+    - .cache/zsh
 
 - name: Move Homebrew cache under XDG
   shell: |
@@ -326,3 +329,97 @@
     executable: /bin/bash
   register: migrate_cocoapods_home
   changed_when: "'migrated' in migrate_cocoapods_home.stdout or 'removed_legacy_symlink' in migrate_cocoapods_home.stdout"
+
+- name: Move zsh config files under XDG
+  shell: |
+    set -eu
+    legacy_base="{{ ansible_facts['env']['HOME'] }}"
+    target_dir="{{ ansible_facts['env']['HOME'] }}/.config/zsh"
+
+    mkdir -p "$target_dir"
+
+    for f in .zshrc .zprofile .zlogin .zlogout; do
+      legacy="$legacy_base/$f"
+      target="$target_dir/$f"
+      if [ -L "$legacy" ]; then
+        rm -f "$legacy"
+        echo "removed_legacy_symlink:$f"
+      elif [ -f "$legacy" ]; then
+        cp -a "$legacy" "$target"
+        rm -f "$legacy"
+        echo "migrated:$f"
+      fi
+    done
+  args:
+    executable: /bin/bash
+  register: migrate_zsh_configs
+  changed_when: migrate_zsh_configs.stdout != ''
+
+- name: Move ~/.zshenv into XDG (keep minimal ~/.zshenv handled by dotfiles)
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.zshenv"
+    target_dir="{{ ansible_facts['env']['HOME'] }}/.config/zsh"
+    target="$target_dir/.zshenv"
+
+    mkdir -p "$target_dir"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -f "$legacy" ]; then
+      cp -a "$legacy" "$target"
+      rm -f "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_zshenv
+  changed_when: "'migrated' in migrate_zshenv.stdout or 'removed_legacy_symlink' in migrate_zshenv.stdout"
+
+- name: Move zsh history under XDG state
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.zsh_history"
+    target_dir="{{ ansible_facts['env']['HOME'] }}/.local/state/zsh"
+    target="$target_dir/history"
+
+    mkdir -p "$target_dir"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -f "$legacy" ]; then
+      cp -a "$legacy" "$target"
+      rm -f "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_zsh_history
+  changed_when: "'migrated' in migrate_zsh_history.stdout or 'removed_legacy_symlink' in migrate_zsh_history.stdout"
+
+- name: Move zsh compdump files under ZDOTDIR (XDG config)
+  shell: |
+    set -eu
+    home="{{ ansible_facts['env']['HOME'] }}"
+    legacy_pattern="$home/.zcompdump*"
+    target_dir="$home/.config/zsh"
+
+    mkdir -p "$target_dir"
+
+    shopt -s nullglob
+    for f in $legacy_pattern; do
+      if [ -L "$f" ]; then
+        rm -f "$f"
+        echo removed_legacy_symlink:$(basename "$f")
+      elif [ -f "$f" ]; then
+        cp -a "$f" "$target_dir/"
+        rm -f "$f"
+        echo migrated:$(basename "$f")
+      fi
+    done
+  args:
+    executable: /bin/bash
+  register: migrate_zsh_compdump
+  changed_when: migrate_zsh_compdump.stdout != ''
