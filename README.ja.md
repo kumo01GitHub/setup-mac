@@ -224,14 +224,14 @@ Ansible 実行時に以下の設定が適用されます。
 
 ## 🧹 XDG 正規化
 
-プレイブック実行時に `xdg_normalize` ロールで、既に作成されてしまった非XDGディレクトリをXDG配下へ移設し、旧パスは削除します。
+プレイブック実行時に `xdg_normalize` ロールで、デフォルトの非XDGパスをXDG配下へ移設し、レガシーパスは削除します。
 
 Ansibleの一時ファイルは、`.zshenv`で設定される環境変数により`~/.cache/ansible/tmp`に作成されます。プレイブック実行後、旧来の`~/.ansible`ディレクトリは自動的に削除されます。
 
-**移設一覧：**
+**移設一覧（デフォルトパス → XDGパス）：**
 
-| ツール | 旧パス | 新パス |
-|--------|--------|--------|
+| ツール | デフォルトパス | XDGパス |
+|--------|----------------|----------|
 | Homebrew | `~/Library/Caches/Homebrew` | `~/.cache/Homebrew` |
 | Ansible | `~/.ansible` | `~/.local/share/ansible` |
 | Android SDK | `~/.android` | `~/.local/share/android` |

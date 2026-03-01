@@ -191,14 +191,14 @@ The playbook applies the following settings:
 
 ## 🧹 XDG Normalization
 
-The `xdg_normalize` role migrates existing non-XDG paths into XDG-compliant locations and removes old paths.
+The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locations and removes legacy paths.
 
 Ansible's temporary files are created in `~/.cache/ansible/tmp` via environment variables set in `.zshenv`. After the playbook runs, the legacy `~/.ansible` directory is automatically removed.
 
-**Migration list:**
+**Migration list (default path → XDG path):**
 
-| Tool | Old path | New path |
-|------|----------|----------|
+| Tool | Default path | XDG path |
+|------|--------------|----------|
 | Homebrew | `~/Library/Caches/Homebrew` | `~/.cache/Homebrew` |
 | Ansible | `~/.ansible` | `~/.local/share/ansible` |
 | Android SDK | `~/.android` | `~/.local/share/android` |
