@@ -423,8 +423,3 @@
     executable: /bin/bash
   register: migrate_zsh_sessions
   changed_when: "'migrated' in migrate_zsh_sessions.stdout or 'removed_legacy_symlink' in migrate_zsh_sessions.stdout"
-
-- name: Clean up legacy .ansible directory after XDG migration
-  file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.ansible"
-    state: absent

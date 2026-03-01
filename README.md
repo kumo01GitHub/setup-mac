@@ -192,7 +192,6 @@ The playbook applies the following settings:
 
 The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locations and removes legacy paths.
 
-Ansible's temporary files are created in `~/.cache/ansible/tmp` via environment variables set in `.zshenv`. After the playbook runs, the legacy `~/.ansible` directory is automatically removed.
 
 **Migration list (default path → XDG path):**
 
