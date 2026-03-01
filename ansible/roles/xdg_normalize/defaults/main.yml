@@ -1,0 +1,78 @@
+---
+# ansible/roles/xdg_normalize/defaults/main.yml
+
+xdg_normalize_directories:
+  - .config
+  - .cache
+  - .local
+  - .local/share
+  - .local/state
+  - .cache/ansible
+  - .cache/ansible/tmp
+  - .cache/Homebrew
+  - .cache/mise
+  - .cache/npm
+  - .cache/pip
+  - .cache/pub
+  - .cache/python
+  - .cache/python/pycache
+  - .cache/gem
+  - .cache/gem/specs
+  - .config/docker
+  - .config/mise
+  - .config/npm
+  - .config/pip
+  - .local/state/Homebrew
+  - .local/state/Homebrew/logs
+  - .local/share/ansible
+  - .local/share/android
+  - .local/share/cocoapods
+  - .local/share/gradle
+  - .local/share/mise
+  - .local/share/npm
+  - .config/zsh
+  - .local/state/zsh
+  - .local/state/zsh/sessions
+  - .cache/zsh
+
+xdg_normalize_directory_migrations:
+  - legacy: Library/Caches/Homebrew
+    target: .cache/Homebrew
+  - legacy: .ansible
+    target: .local/share/ansible
+  - legacy: .android
+    target: .local/share/android
+  - legacy: .gradle
+    target: .local/share/gradle
+  - legacy: .docker
+    target: .config/docker
+  - legacy: .mise
+    target: .local/share/mise
+  - legacy: .npm
+    target: .cache/npm
+  - legacy: .pub-cache
+    target: .cache/pub
+  - legacy: .pip
+    target: .config/pip
+  - legacy: Library/Caches/pip
+    target: .cache/pip
+  - legacy: .gem
+    target: .cache/gem
+  - legacy: .cocoapods
+    target: .local/share/cocoapods
+  - legacy: .zsh_sessions
+    target: .local/state/zsh/sessions
+
+xdg_normalize_file_migrations:
+  - legacy: .hadolint.yaml
+    target: .config/hadolint.yaml
+  - legacy: .npmrc
+    target: .config/npm/npmrc
+  - legacy: .zsh_history
+    target: .local/state/zsh/history
+
+xdg_normalize_zsh_config_files:
+  - .zshrc
+  - .zprofile
+  - .zlogin
+  - .zlogout

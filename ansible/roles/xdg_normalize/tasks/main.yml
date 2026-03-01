@@ -7,329 +7,65 @@
     path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
     state: directory
     mode: '0755'
-  loop:
-    - .config
-    - .cache
-    - .local
-    - .local/share
-    - .local/state
-    - .cache/ansible
-    - .cache/ansible/tmp
-    - .cache/Homebrew
-    - .cache/mise
-    - .cache/npm
-    - .cache/pip
-    - .cache/pub
-    - .cache/python
-    - .cache/python/pycache
-    - .cache/gem
-    - .cache/gem/specs
-    - .config/docker
-    - .config/mise
-    - .config/npm
-    - .config/pip
-    - .local/state/Homebrew
-    - .local/state/Homebrew/logs
-    - .local/share/ansible
-    - .local/share/android
-    - .local/share/cocoapods
-    - .local/share/gradle
-    - .local/share/mise
-    - .local/share/npm
-    - .config/zsh
-    - .local/state/zsh
-    - .local/state/zsh/sessions
-    - .cache/zsh
+  loop: "{{ xdg_normalize_directories }}"
 
-- name: Move Homebrew cache under XDG
+- name: Move legacy directories under XDG
   shell: |
     set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/Library/Caches/Homebrew"
-    target="{{ ansible_facts['env']['HOME'] }}/.cache/Homebrew"
+    legacy="{{ ansible_facts['env']['HOME'] }}/{{ item.legacy }}"
+    target="{{ ansible_facts['env']['HOME'] }}/{{ item.target }}"
+    changed=0
 
     if [ -L "$legacy" ]; then
       rm -f "$legacy"
-      echo removed_legacy_symlink
+      changed=1
     elif [ -d "$legacy" ]; then
       if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
         cp -a "$legacy"/. "$target"/
       fi
       rm -rf "$legacy"
-      echo migrated
+      changed=1
+    fi
+
+    if [ "$changed" -eq 1 ]; then
+      exit 3
     fi
   args:
     executable: /bin/bash
-  register: migrate_homebrew_cache
-  changed_when: "'migrated' in migrate_homebrew_cache.stdout or 'removed_legacy_symlink' in migrate_homebrew_cache.stdout"
+  loop: "{{ xdg_normalize_directory_migrations }}"
+  loop_control:
+    label: "{{ item.legacy }} -> {{ item.target }}"
+  register: xdg_normalize_migrate_dirs
+  changed_when: xdg_normalize_migrate_dirs.rc == 3
+  failed_when: xdg_normalize_migrate_dirs.rc not in [0, 3]
 
-- name: Move Ansible home directory under XDG
+- name: Move legacy files under XDG
   shell: |
     set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.ansible"
-    target="{{ ansible_facts['env']['HOME'] }}/.local/share/ansible"
+    legacy="{{ ansible_facts['env']['HOME'] }}/{{ item.legacy }}"
+    target="{{ ansible_facts['env']['HOME'] }}/{{ item.target }}"
+    changed=0
 
     if [ -L "$legacy" ]; then
       rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_ansible_home
-  changed_when: "'migrated' in migrate_ansible_home.stdout or 'removed_legacy_symlink' in migrate_ansible_home.stdout"
-
-- name: Move Android user directory under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.android"
-    target="{{ ansible_facts['env']['HOME'] }}/.local/share/android"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_android_home
-  changed_when: "'migrated' in migrate_android_home.stdout or 'removed_legacy_symlink' in migrate_android_home.stdout"
-
-- name: Move Gradle home directory under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.gradle"
-    target="{{ ansible_facts['env']['HOME'] }}/.local/share/gradle"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_gradle_home
-  changed_when: "'migrated' in migrate_gradle_home.stdout or 'removed_legacy_symlink' in migrate_gradle_home.stdout"
-
-- name: Move Docker config directory under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.docker"
-    target="{{ ansible_facts['env']['HOME'] }}/.config/docker"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_docker_config
-  changed_when: "'migrated' in migrate_docker_config.stdout or 'removed_legacy_symlink' in migrate_docker_config.stdout"
-
-- name: Move mise home directory under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.mise"
-    target="{{ ansible_facts['env']['HOME'] }}/.local/share/mise"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_mise_home
-  changed_when: "'migrated' in migrate_mise_home.stdout or 'removed_legacy_symlink' in migrate_mise_home.stdout"
-
-- name: Move hadolint config file under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.hadolint.yaml"
-    target="{{ ansible_facts['env']['HOME'] }}/.config/hadolint.yaml"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
+      changed=1
     elif [ -f "$legacy" ]; then
       cp -a "$legacy" "$target"
       rm -f "$legacy"
-      echo migrated
+      changed=1
+    fi
+
+    if [ "$changed" -eq 1 ]; then
+      exit 3
     fi
   args:
     executable: /bin/bash
-  register: migrate_hadolint_config
-  changed_when: "'migrated' in migrate_hadolint_config.stdout or 'removed_legacy_symlink' in migrate_hadolint_config.stdout"
-
-- name: Move npm cache directory under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.npm"
-    target="{{ ansible_facts['env']['HOME'] }}/.cache/npm"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_npm_cache
-  changed_when: "'migrated' in migrate_npm_cache.stdout or 'removed_legacy_symlink' in migrate_npm_cache.stdout"
-
-- name: Move Flutter pub cache directory under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.pub-cache"
-    target="{{ ansible_facts['env']['HOME'] }}/.cache/pub"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_flutter_pub_cache
-  changed_when: "'migrated' in migrate_flutter_pub_cache.stdout or 'removed_legacy_symlink' in migrate_flutter_pub_cache.stdout"
-
-- name: Move npm config file under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.npmrc"
-    target="{{ ansible_facts['env']['HOME'] }}/.config/npm/npmrc"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -f "$legacy" ]; then
-      cp -a "$legacy" "$target"
-      rm -f "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_npmrc
-  changed_when: "'migrated' in migrate_npmrc.stdout or 'removed_legacy_symlink' in migrate_npmrc.stdout"
-
-- name: Move pip legacy directory under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.pip"
-    target="{{ ansible_facts['env']['HOME'] }}/.config/pip"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_pip_legacy
-  changed_when: "'migrated' in migrate_pip_legacy.stdout or 'removed_legacy_symlink' in migrate_pip_legacy.stdout"
-
-- name: Move pip cache directory under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/Library/Caches/pip"
-    target="{{ ansible_facts['env']['HOME'] }}/.cache/pip"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_pip_cache
-  changed_when: "'migrated' in migrate_pip_cache.stdout or 'removed_legacy_symlink' in migrate_pip_cache.stdout"
-
-- name: Move RubyGems cache under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.gem"
-    target="{{ ansible_facts['env']['HOME'] }}/.cache/gem"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_gem_cache
-  changed_when: "'migrated' in migrate_gem_cache.stdout or 'removed_legacy_symlink' in migrate_gem_cache.stdout"
-
-- name: Move CocoaPods home under XDG
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.cocoapods"
-    target="{{ ansible_facts['env']['HOME'] }}/.local/share/cocoapods"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_cocoapods_home
-  changed_when: "'migrated' in migrate_cocoapods_home.stdout or 'removed_legacy_symlink' in migrate_cocoapods_home.stdout"
+  loop: "{{ xdg_normalize_file_migrations }}"
+  loop_control:
+    label: "{{ item.legacy }} -> {{ item.target }}"
+  register: xdg_normalize_migrate_files
+  changed_when: xdg_normalize_migrate_files.rc == 3
+  failed_when: xdg_normalize_migrate_files.rc not in [0, 3]
 
 - name: Move zsh config files under XDG
   shell: |
@@ -339,7 +75,7 @@
 
     mkdir -p "$target_dir"
 
-    for f in .zshrc .zprofile .zlogin .zlogout; do
+    for f in {{ xdg_normalize_zsh_config_files | join(' ') }}; do
       legacy="$legacy_base/$f"
       target="$target_dir/$f"
       if [ -L "$legacy" ]; then
@@ -355,28 +91,6 @@
     executable: /bin/bash
   register: migrate_zsh_configs
   changed_when: migrate_zsh_configs.stdout != ''
-
-- name: Move zsh history under XDG state
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.zsh_history"
-    target_dir="{{ ansible_facts['env']['HOME'] }}/.local/state/zsh"
-    target="$target_dir/history"
-
-    mkdir -p "$target_dir"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -f "$legacy" ]; then
-      cp -a "$legacy" "$target"
-      rm -f "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_zsh_history
-  changed_when: "'migrated' in migrate_zsh_history.stdout or 'removed_legacy_symlink' in migrate_zsh_history.stdout"
 
 - name: Move zsh compdump files under ZDOTDIR (XDG config)
   shell: |
@@ -402,24 +116,3 @@
     executable: /bin/bash
   register: migrate_zsh_compdump
   changed_when: migrate_zsh_compdump.stdout != ''
-
-- name: Move zsh sessions directory under XDG state
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.zsh_sessions"
-    target="{{ ansible_facts['env']['HOME'] }}/.local/state/zsh/sessions"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -d "$legacy" ]; then
-      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
-        cp -a "$legacy"/. "$target"/
-      fi
-      rm -rf "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_zsh_sessions
-  changed_when: "'migrated' in migrate_zsh_sessions.stdout or 'removed_legacy_symlink' in migrate_zsh_sessions.stdout"
