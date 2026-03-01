@@ -84,6 +84,20 @@ If a task requires elevated privileges (for example, installing the `docker` cas
 ansible-playbook site.yml --ask-become-pass
 ```
 
+To run with Git identity values:
+
+Git user name/email are resolved in this order:  
+1. CLI vars (`-e git_user_name=... -e git_user_email=...`)  
+2. Environment variables (`GIT_USER_NAME`, `GIT_USER_EMAIL`)  
+3. Interactive prompt at runtime when still missing  
+
+```bash
+GIT_USER_NAME="Your Name" GIT_USER_EMAIL="your.email@example.com" ansible-playbook site.yml
+
+# or
+ansible-playbook site.yml -e git_user_name="Your Name" -e git_user_email="your.email@example.com"
+```
+
 ### Add dotfiles
 
 1. Add files under `dotfiles/`
@@ -123,16 +137,6 @@ To apply changes, open a new terminal or run:
 
 ```bash
 source ~/.config/zsh/.zshrc
-```
-
-### Update Git identity
-
-Set `git_user_name` and `git_user_email` in `ansible/custom.yml`.  
-For advanced Git settings, edit `dotfiles/.config/git/config`.
-
-```yaml
-git_user_name: Your Name
-git_user_email: your.email@example.com
 ```
 
 ---

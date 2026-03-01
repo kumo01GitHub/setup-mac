@@ -84,6 +84,20 @@ ansible-playbook site.yml
 ansible-playbook site.yml --ask-become-pass
 ```
 
+Git のユーザー名/メールを指定して実行する場合:
+
+Git のユーザー名/メールは次の優先順で設定されます。  
+1. コマンドライン引数（`-e git_user_name=... -e git_user_email=...`）  
+2. 環境変数（`GIT_USER_NAME`, `GIT_USER_EMAIL`）  
+3. 未設定の場合は実行時プロンプトで入力  
+
+```bash
+GIT_USER_NAME="Your Name" GIT_USER_EMAIL="your.email@example.com" ansible-playbook site.yml
+
+# または
+ansible-playbook site.yml -e git_user_name="Your Name" -e git_user_email="your.email@example.com"
+```
+
 ---
 
 ## ⚙️ カスタマイズ
@@ -127,16 +141,6 @@ mise_toolchains_extra:
 
 ```bash
 source ~/.config/zsh/.zshrc
-```
-
-### Gitの設定を変更する
-
-`ansible/custom.yml` で `git_user_name` と `git_user_email` を設定してください。  
-Git の詳細設定は `dotfiles/.config/git/config` を編集してください。
-
-```yaml
-git_user_name: Your Name
-git_user_email: your.email@example.com
 ```
 
 ---

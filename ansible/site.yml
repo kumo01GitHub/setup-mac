@@ -23,6 +23,38 @@
       set_fact:
         custom: "{{ custom | default({}) }}"
 
+    - name: Resolve git user name from CLI var or environment
+      set_fact:
+        git_user_name_resolved: "{{ git_user_name | default(lookup('ansible.builtin.env', 'GIT_USER_NAME'), true) | default('', true) | trim }}"
+
+    - name: Resolve git user email from CLI var or environment
+      set_fact:
+        git_user_email_resolved: "{{ git_user_email | default(lookup('ansible.builtin.env', 'GIT_USER_EMAIL'), true) | default('', true) | trim }}"
+
+    - name: Prompt for git user name when not provided
+      pause:
+        prompt: "Enter Git user name (or pass -e git_user_name=... / set GIT_USER_NAME)"
+      register: git_user_name_prompt
+      when: git_user_name_resolved == ''
+
+    - name: Prompt for git user email when not provided
+      pause:
+        prompt: "Enter Git user email (or pass -e git_user_email=... / set GIT_USER_EMAIL)"
+      register: git_user_email_prompt
+      when: git_user_email_resolved == ''
+
+    - name: Finalize git identity values
+      set_fact:
+        git_user_name_resolved: "{{ git_user_name_resolved if git_user_name_resolved != '' else (git_user_name_prompt.user_input | default('') | trim) }}"
+        git_user_email_resolved: "{{ git_user_email_resolved if git_user_email_resolved != '' else (git_user_email_prompt.user_input | default('') | trim) }}"
+
+    - name: Validate git identity values are set
+      assert:
+        that:
+          - git_user_name_resolved != ''
+          - git_user_email_resolved != ''
+        fail_msg: "Git user name/email are required. Set env vars, pass -e, or input values at prompt."
+
   roles:
     - homebrew
     - vscode_extensions
