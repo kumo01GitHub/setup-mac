@@ -53,12 +53,14 @@ export PUB_CACHE="${PUB_CACHE:-$XDG_CACHE_HOME/pub}"
 
 # Ensure state dir for history exists
 mkdir -p "$XDG_STATE_HOME/zsh"
+mkdir -p "$XDG_STATE_HOME/less" "$XDG_STATE_HOME/vim"
 
 # Path
 export PATH="$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:$PATH"
 
 # History
 HISTFILE="$XDG_STATE_HOME/zsh/history"
+export LESSHISTFILE="${LESSHISTFILE:-$XDG_STATE_HOME/less/history}"
 HISTSIZE=10000
 SAVEHIST=10000
 setopt HIST_IGNORE_DUPS

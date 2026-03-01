@@ -12,6 +12,7 @@
     state: directory
     mode: '0755'
   loop:
+    - .vimrc
     - .zshenv
     - .config/zsh/.zshrc
     - .gitconfig
@@ -24,6 +25,7 @@
   stat:
     path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
   loop:
+    - .vimrc
     - .zshenv
     - .config/zsh/.zshrc
     - .gitconfig
@@ -47,6 +49,7 @@
     force: true
     mode: preserve
   loop:
+    - .vimrc
     - .zshenv
     - .config/zsh/.zshrc
     - .gitconfig
