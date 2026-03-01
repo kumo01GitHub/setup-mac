@@ -38,6 +38,7 @@
     - .local/share/npm
     - .config/zsh
     - .local/state/zsh
+    - .local/state/zsh/sessions
     - .cache/zsh
 
 - name: Move Homebrew cache under XDG
@@ -355,28 +356,6 @@
   register: migrate_zsh_configs
   changed_when: migrate_zsh_configs.stdout != ''
 
-- name: Move ~/.zshenv into XDG (keep minimal ~/.zshenv handled by dotfiles)
-  shell: |
-    set -eu
-    legacy="{{ ansible_facts['env']['HOME'] }}/.zshenv"
-    target_dir="{{ ansible_facts['env']['HOME'] }}/.config/zsh"
-    target="$target_dir/.zshenv"
-
-    mkdir -p "$target_dir"
-
-    if [ -L "$legacy" ]; then
-      rm -f "$legacy"
-      echo removed_legacy_symlink
-    elif [ -f "$legacy" ]; then
-      cp -a "$legacy" "$target"
-      rm -f "$legacy"
-      echo migrated
-    fi
-  args:
-    executable: /bin/bash
-  register: migrate_zshenv
-  changed_when: "'migrated' in migrate_zshenv.stdout or 'removed_legacy_symlink' in migrate_zshenv.stdout"
-
 - name: Move zsh history under XDG state
   shell: |
     set -eu
@@ -423,3 +402,29 @@
     executable: /bin/bash
   register: migrate_zsh_compdump
   changed_when: migrate_zsh_compdump.stdout != ''
+
+- name: Move zsh sessions directory under XDG state
+  shell: |
+    set -eu
+    legacy="{{ ansible_facts['env']['HOME'] }}/.zsh_sessions"
+    target="{{ ansible_facts['env']['HOME'] }}/.local/state/zsh/sessions"
+
+    if [ -L "$legacy" ]; then
+      rm -f "$legacy"
+      echo removed_legacy_symlink
+    elif [ -d "$legacy" ]; then
+      if [ -n "$(ls -A "$legacy" 2>/dev/null)" ]; then
+        cp -a "$legacy"/. "$target"/
+      fi
+      rm -rf "$legacy"
+      echo migrated
+    fi
+  args:
+    executable: /bin/bash
+  register: migrate_zsh_sessions
+  changed_when: "'migrated' in migrate_zsh_sessions.stdout or 'removed_legacy_symlink' in migrate_zsh_sessions.stdout"
+
+- name: Clean up legacy .ansible directory after XDG migration
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.ansible"
+    state: absent

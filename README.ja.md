@@ -226,6 +226,10 @@ Ansible 実行時に以下の設定が適用されます。
 
 プレイブック実行時に `xdg_normalize` ロールで、既に作成されてしまった非XDGディレクトリをXDG配下へ移設し、旧パスは削除します。
 
+Ansibleの一時ファイルは、`.zshenv`で設定される環境変数により`~/.cache/ansible/tmp`に作成されます。プレイブック実行後、旧来の`~/.ansible`ディレクトリは自動的に削除されます。
+
+**移設されるディレクトリ：**
+
 - `~/Library/Caches/Homebrew` → `~/.cache/Homebrew`
 - `~/.ansible` → `~/.local/share/ansible`
 - `~/.android` → `~/.local/share/android`
@@ -240,8 +244,8 @@ Ansible 実行時に以下の設定が適用されます。
 - `~/.cocoapods` → `~/.local/share/cocoapods`
 
 - `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` → `~/.config/zsh/`
-- `~/.zshenv` → `~/.config/zsh/.zshenv`
 - `~/.zsh_history` → `~/.local/state/zsh/history`
+- `~/.zsh_sessions` → `~/.local/state/zsh/sessions`
 - `~/.zcompdump*` → `~/.config/zsh/`
 
 ---

@@ -8,5 +8,8 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 # Put zsh dotfiles under XDG config
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
+# Put zsh session data under XDG state
+export SHELL_SESSION_DIR="${XDG_STATE_HOME}/zsh/sessions"
+
 # Ensure zsh config/state/cache dirs exist
-mkdir -p "$ZDOTDIR" "$XDG_STATE_HOME/zsh" "$XDG_CACHE_HOME/zsh"
+mkdir -p "$ZDOTDIR" "$XDG_STATE_HOME/zsh" "$XDG_CACHE_HOME/zsh" "$SHELL_SESSION_DIR"

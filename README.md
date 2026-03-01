@@ -193,6 +193,10 @@ The playbook applies the following settings:
 
 The `xdg_normalize` role migrates existing non-XDG paths into XDG-compliant locations and removes old paths.
 
+Ansible's temporary files are created in `~/.cache/ansible/tmp` via environment variables set in `.zshenv`. After the playbook runs, the legacy `~/.ansible` directory is automatically removed.
+
+**Migrated directories:**
+
 - `~/Library/Caches/Homebrew` → `~/.cache/Homebrew`
 - `~/.ansible` → `~/.local/share/ansible`
 - `~/.android` → `~/.local/share/android`
@@ -207,8 +211,8 @@ The `xdg_normalize` role migrates existing non-XDG paths into XDG-compliant loca
 - `~/.cocoapods` → `~/.local/share/cocoapods`
 
 - `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` → `~/.config/zsh/`
-- `~/.zshenv` → `~/.config/zsh/.zshenv`
 - `~/.zsh_history` → `~/.local/state/zsh/history`
+- `~/.zsh_sessions` → `~/.local/state/zsh/sessions`
 - `~/.zcompdump*` → `~/.config/zsh/`
 
 ---
