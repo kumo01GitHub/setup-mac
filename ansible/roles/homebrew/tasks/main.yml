@@ -36,7 +36,9 @@
     owner: "{{ ansible_facts['user_id'] }}"
     group: staff
     mode: '0755'
-  loop: "{{ homebrew_docker_cask_directories }}"
+  loop:
+    - /usr/local/bin
+    - /usr/local/cli-plugins
 
 - name: Install Homebrew cask apps
   homebrew_cask:

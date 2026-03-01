@@ -18,10 +18,6 @@ homebrew_packages:
   - delta
   - sheldon
 
-homebrew_docker_cask_directories:
-  - /usr/local/bin
-  - /usr/local/cli-plugins
-
 homebrew_cask_apps:
   - visual-studio-code
   - wezterm
