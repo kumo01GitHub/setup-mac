@@ -28,6 +28,7 @@
     path: /opt/homebrew/bin
   loop: "{{ homebrew_packages }}"
 
+# Workaround: avoid sudo password prompt during Docker cask installation
 - name: Create Docker cask directories
   become: true
   file:
