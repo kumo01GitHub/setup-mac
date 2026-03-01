@@ -11,7 +11,6 @@ homebrew_packages:
   - eza
   - lcov
   - jq
-  - docker-compose
   - hadolint
   - starship
   - mise

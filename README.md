@@ -128,7 +128,6 @@ For advanced Git settings, edit `dotfiles/.config/git/config`.
 | [eza](https://github.com/eza-community/eza) | Modern `ls` alternative |
 | [lcov](https://github.com/linux-test-project/lcov) | Coverage measurement tool |
 | [jq](https://jqlang.org/) | JSON processor |
-| [docker-compose](https://docs.docker.com/compose/) | Container orchestration |
 | [hadolint](https://github.com/hadolint/hadolint) | Dockerfile linter |
 | [starship](https://starship.rs/) | Cross-shell prompt |
 | [mise](https://mise.jdx.dev/) | Runtime/version manager |

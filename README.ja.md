@@ -161,7 +161,6 @@ Git の詳細設定は `dotfiles/.config/git/config` を編集してください
 | [eza](https://github.com/eza-community/eza) | 高機能 `ls` 代替 |
 | [lcov](https://github.com/linux-test-project/lcov) | カバレッジ計測ツール |
 | [jq](https://jqlang.org/) | JSONプロセッサ |
-| [docker-compose](https://docs.docker.com/compose/) | コンテナオーケストレーション |
 | [hadolint](https://github.com/hadolint/hadolint) | Dockerfileリンター |
 | [starship](https://starship.rs/) | クロスシェルプロンプト |
 | [mise](https://mise.jdx.dev/) | 開発ツールバージョン管理 |
