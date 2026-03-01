@@ -31,7 +31,7 @@
     executable: /bin/bash
   register: mise_plugins_setup
   changed_when: "'installed_plugin' in mise_plugins_setup.stdout"
-  loop: "{{ mise_plugins }}"
+  loop: "{{ (mise_plugins + (custom.mise_plugins_extra | default([]))) | unique }}"
 
 - name: Install toolchains via mise and set global versions
   shell: |
@@ -57,7 +57,7 @@
     executable: /bin/bash
   register: mise_toolchain_setup
   changed_when: "'installed' in mise_toolchain_setup.stdout"
-  loop: "{{ mise_toolchains }}"
+  loop: "{{ (mise_toolchains + (custom.mise_toolchains_extra | default([]))) | unique }}"
 
 - name: Install CocoaPods into mise-managed Ruby
   shell: |

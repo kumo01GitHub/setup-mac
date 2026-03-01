@@ -7,7 +7,7 @@
     path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
     state: directory
     mode: '0755'
-  loop: "{{ xdg_normalize_directories }}"
+  loop: "{{ xdg_normalize_directories + (custom.xdg_normalize_directories_extra | default([])) }}"
 
 - name: Move legacy directories under XDG
   shell: |
@@ -32,7 +32,7 @@
     fi
   args:
     executable: /bin/bash
-  loop: "{{ xdg_normalize_directory_migrations }}"
+  loop: "{{ xdg_normalize_directory_migrations + (custom.xdg_normalize_directory_migrations_extra | default([])) }}"
   loop_control:
     label: "{{ item.legacy }} -> {{ item.target }}"
   register: xdg_normalize_migrate_dirs
@@ -60,7 +60,7 @@
     fi
   args:
     executable: /bin/bash
-  loop: "{{ xdg_normalize_file_migrations }}"
+  loop: "{{ xdg_normalize_file_migrations + (custom.xdg_normalize_file_migrations_extra | default([])) }}"
   loop_control:
     label: "{{ item.legacy }} -> {{ item.target }}"
   register: xdg_normalize_migrate_files
@@ -75,7 +75,7 @@
 
     mkdir -p "$target_dir"
 
-    for f in {{ xdg_normalize_zsh_config_files | join(' ') }}; do
+    for f in {{ (xdg_normalize_zsh_config_files + (custom.xdg_normalize_zsh_config_files_extra | default([]))) | join(' ') }}; do
       legacy="$legacy_base/$f"
       target="$target_dir/$f"
       if [ -L "$legacy" ]; then

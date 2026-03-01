@@ -42,6 +42,12 @@
   loop: "{{ dotfile_destination_stats.results }}"
   when: item.stat.islnk | default(false)
 
+- name: Render .gitconfig with custom identity
+  template:
+    src: gitconfig.j2
+    dest: "{{ ansible_facts['env']['HOME'] }}/.gitconfig"
+    mode: '0644'
+
 - name: Copy dotfiles to home directory
   copy:
     src: "{{ dotfiles_dir }}/{{ item }}"
@@ -52,7 +58,6 @@
     - .vimrc
     - .zshenv
     - .config/zsh/.zshrc
-    - .gitconfig
     - .config/git/config
     - .config/sheldon/plugins.toml
     - .config/wezterm/wezterm.lua

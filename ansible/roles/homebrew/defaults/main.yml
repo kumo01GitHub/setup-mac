@@ -1,26 +1,19 @@
 ---
 # ansible/roles/homebrew/defaults/main.yml
 
+# Required packages for this playbook and dotfiles to work as intended.
+# - dotfiles dependency: bat, eza, starship, delta, sheldon
+# - role dependency: dockutil (macos role), mise (mise role), ansible (self-management)
 homebrew_packages:
-  - git
-  - curl
   - bat
   - dockutil
-  - tree
-  - ansible
   - eza
-  - lcov
-  - jq
-  - hadolint
+  - ansible
   - starship
   - mise
   - delta
   - sheldon
 
+# Required app for vscode_extensions role (`code` CLI detection fallback).
 homebrew_cask_apps:
   - visual-studio-code
-  - wezterm
-  - google-chrome
-  - docker
-  - font-fira-code-nerd-font
-  - android-studio

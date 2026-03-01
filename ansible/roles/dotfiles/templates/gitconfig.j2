@@ -1,0 +1,6 @@
+[user]
+    name = {{ custom.git_user_name | default('Your Name') }}
+    email = {{ custom.git_user_email | default('your.email@example.com') }}
+
+[include]
+    path = ~/.config/git/config

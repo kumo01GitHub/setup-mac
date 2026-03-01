@@ -23,6 +23,6 @@
     "{{ vscode_cli.stdout }}" --install-extension "{{ item }}"
   args:
     executable: /bin/bash
-  loop: "{{ vscode_extensions_list }}"
+  loop: "{{ (vscode_extensions_list + (custom.vscode_extensions_list_extra | default([]))) | unique }}"
   register: vscode_extensions_install
   changed_when: "'successfully installed' in (vscode_extensions_install.stdout | lower)"

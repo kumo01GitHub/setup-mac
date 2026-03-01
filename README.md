@@ -89,6 +89,31 @@ ansible-playbook site.yml --ask-become-pass
 1. Add files under `dotfiles/`
 2. Add each target file to the `loop` in `ansible/roles/dotfiles/tasks/main.yml`
 
+### Customize role variables with `custom.yml`
+
+You can add items to role defaults without editing `defaults/main.yml`, using only `ansible/custom.yml`.
+
+1. Edit `ansible/custom.yml`
+2. Add items using `*_extra` variables
+
+`ansible/site.yml` automatically loads `ansible/custom.yml` before roles run.
+
+Example: `ansible/custom.yml`
+
+```yaml
+homebrew_packages_extra:
+    - ripgrep
+
+homebrew_cask_apps_extra:
+    - firefox
+
+mise_plugins_extra:
+    - java
+
+mise_toolchains_extra:
+    - go@latest
+```
+
 ### Edit `zsh` configuration
 
 Edit `dotfiles/.config/zsh/.zshrc` for shell customization.  
@@ -102,18 +127,19 @@ source ~/.config/zsh/.zshrc
 
 ### Update Git identity
 
-Set your name and email in `dotfiles/.gitconfig` (`[user]` section).  
+Set `git_user_name` and `git_user_email` in `ansible/custom.yml`.  
 For advanced Git settings, edit `dotfiles/.config/git/config`.
 
-```ini
-[user]
-    name = Your Name
-    email = your.email@example.com
+```yaml
+git_user_name: Your Name
+git_user_email: your.email@example.com
 ```
 
 ---
 
 ## 📦 Main Installed Items
+
+Items in this section can include optional tools/apps/extensions managed via `ansible/custom.yml` (`*_extra`).
 
 ### CLI tools (`brew`)
 

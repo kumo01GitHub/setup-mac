@@ -1,13 +1,12 @@
 ---
 # ansible/roles/mise/defaults/main.yml
 
+# Keep only required minimum in defaults.
+# Optional plugins/toolchains should be added via ansible/custom.yml
+# using mise_plugins_extra / mise_toolchains_extra.
 mise_plugins:
-  - flutter
+  []
 
+# Required for CocoaPods install task (uses ruby@latest in this role).
 mise_toolchains:
   - ruby@latest
-  - node@latest
-  - python@latest
-  - java@latest
-  - gradle@latest
-  - flutter@latest

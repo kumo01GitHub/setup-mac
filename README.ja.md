@@ -88,33 +88,29 @@ ansible-playbook site.yml --ask-become-pass
 
 ## ⚙️ カスタマイズ
 
-### インストールするパッケージを変更する
+### ロール変数を `custom.yml` で追加する
 
-`ansible/roles/homebrew/defaults/main.yml` を編集して、`homebrew_packages` にインストールしたいパッケージを追加・削除してください。
+`defaults/main.yml` を直接編集せずに、`ansible/custom.yml` だけを編集して追加できます。
 
-例（このファイルを編集してください）:
+1. `ansible/custom.yml` を編集
+2. 追加したい項目を `*_extra` 変数で記述
 
-```yaml
-# ansible/roles/homebrew/defaults/main.yml
-homebrew_packages:
-  - git
-  - curl
-  # ここに追加したいパッケージを記載
-```
+`ansible/site.yml` で `ansible/custom.yml` を実行前に自動読み込みします。
 
-### mise のツールチェーンとプラグインを変更する
-
-`ansible/roles/mise/defaults/main.yml` を編集して `mise_plugins` と `mise_toolchains` を変更してください。
+例: `ansible/custom.yml`
 
 ```yaml
-# ansible/roles/mise/defaults/main.yml
-mise_plugins:
-  - flutter
+homebrew_packages_extra:
+  - ripgrep
 
-mise_toolchains:
-  - ruby@latest
-  - node@latest
-  # 必要に応じて追加・削除してください
+homebrew_cask_apps_extra:
+  - firefox
+
+mise_plugins_extra:
+  - java
+
+mise_toolchains_extra:
+  - go@latest
 ```
 
 ### dotfiles を追加する
@@ -135,18 +131,19 @@ source ~/.config/zsh/.zshrc
 
 ### Gitの設定を変更する
 
-`dotfiles/.gitconfig` の `[user]` セクションを自分の名前とメールアドレスに変更してください。  
+`ansible/custom.yml` で `git_user_name` と `git_user_email` を設定してください。  
 Git の詳細設定は `dotfiles/.config/git/config` を編集してください。
 
-```ini
-[user]
-    name = Your Name
-    email = your.email@example.com
+```yaml
+git_user_name: Your Name
+git_user_email: your.email@example.com
 ```
 
 ---
 
 ## 📦 インストールされる主なもの
+
+このセクションには、`ansible/custom.yml`（`*_extra`）で管理する任意項目も含まれます。
 
 ### CLIツール（brew）
 

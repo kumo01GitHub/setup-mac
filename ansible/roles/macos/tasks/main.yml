@@ -16,7 +16,7 @@
 
     dockutil --no-restart --remove all
 
-    for app in {% for app in macos_dock_apps %}"{{ app }}" {% endfor %}; do
+    for app in {% for app in (macos_dock_apps + (custom.macos_dock_apps_extra | default([]))) %}"{{ app }}" {% endfor %}; do
       if [ -d "$app" ]; then
         dockutil --no-restart --add "$app"
       fi
@@ -24,6 +24,7 @@
   args:
     executable: /bin/bash
   changed_when: true
+  when: (macos_dock_apps + (custom.macos_dock_apps_extra | default([]))) | length > 0
 
 - name: Show hidden files in Finder
   osx_defaults:

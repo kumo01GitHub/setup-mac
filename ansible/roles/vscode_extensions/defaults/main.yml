@@ -1,19 +1,8 @@
 ---
 # ansible/roles/vscode_extensions/defaults/main.yml
 
+# Keep defaults empty by design.
+# Add optional extensions via ansible/custom.yml using
+# vscode_extensions_list_extra.
 vscode_extensions_list:
-  - EditorConfig.EditorConfig
-  - oderwat.indent-rainbow
-  - esbenp.prettier-vscode
-  - dbaeumer.vscode-eslint
-  - ms-python.python
-  - ms-python.vscode-pylance
-  - Dart-Code.dart-code
-  - Dart-Code.flutter
-  - fwcd.kotlin
-  - swiftlang.swift-vscode
-  - vscjava.vscode-java-pack
-  - vscjava.vscode-gradle
-  - vmware.vscode-spring-boot
-  - redhat.vscode-yaml
-  - redhat.vscode-xml
+  []

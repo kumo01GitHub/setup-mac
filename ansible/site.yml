@@ -7,6 +7,22 @@
   connection: local
   gather_facts: true
 
+  pre_tasks:
+    - name: Check custom variables file
+      stat:
+        path: "{{ playbook_dir }}/custom.yml"
+      register: custom_vars_file
+
+    - name: Load custom variables
+      include_vars:
+        file: "{{ playbook_dir }}/custom.yml"
+        name: custom
+      when: custom_vars_file.stat.exists
+
+    - name: Initialize empty custom variables
+      set_fact:
+        custom: "{{ custom | default({}) }}"
+
   roles:
     - homebrew
     - vscode_extensions
