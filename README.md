@@ -195,25 +195,28 @@ The `xdg_normalize` role migrates existing non-XDG paths into XDG-compliant loca
 
 Ansible's temporary files are created in `~/.cache/ansible/tmp` via environment variables set in `.zshenv`. After the playbook runs, the legacy `~/.ansible` directory is automatically removed.
 
-**Migrated directories:**
+**Migration list:**
 
-- `~/Library/Caches/Homebrew` → `~/.cache/Homebrew`
-- `~/.ansible` → `~/.local/share/ansible`
-- `~/.android` → `~/.local/share/android`
-- `~/.gradle` → `~/.local/share/gradle`
-- `~/.docker` → `~/.config/docker`
-- `~/.mise` → `~/.local/share/mise`
-- `~/.hadolint.yaml` → `~/.config/hadolint.yaml`
-- `~/.npm` / `~/.npmrc` → `~/.cache/npm` / `~/.config/npm/npmrc`
-- `~/.pub-cache` → `~/.cache/pub`
-- `~/.pip` / `~/Library/Caches/pip` → `~/.config/pip` / `~/.cache/pip`
-- `~/.gem` → `~/.cache/gem`
-- `~/.cocoapods` → `~/.local/share/cocoapods`
-
-- `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` → `~/.config/zsh/`
-- `~/.zsh_history` → `~/.local/state/zsh/history`
-- `~/.zsh_sessions` → `~/.local/state/zsh/sessions`
-- `~/.zcompdump*` → `~/.config/zsh/`
+| Tool | Old path | New path |
+|------|----------|----------|
+| Homebrew | `~/Library/Caches/Homebrew` | `~/.cache/Homebrew` |
+| Ansible | `~/.ansible` | `~/.local/share/ansible` |
+| Android SDK | `~/.android` | `~/.local/share/android` |
+| Gradle | `~/.gradle` | `~/.local/share/gradle` |
+| Docker | `~/.docker` | `~/.config/docker` |
+| mise | `~/.mise` | `~/.local/share/mise` |
+| hadolint | `~/.hadolint.yaml` | `~/.config/hadolint.yaml` |
+| npm | `~/.npm` | `~/.cache/npm` |
+| npm | `~/.npmrc` | `~/.config/npm/npmrc` |
+| Flutter/Dart (`pub`) | `~/.pub-cache` | `~/.cache/pub` |
+| pip | `~/.pip` | `~/.config/pip` |
+| pip | `~/Library/Caches/pip` | `~/.cache/pip` |
+| RubyGems | `~/.gem` | `~/.cache/gem` |
+| CocoaPods | `~/.cocoapods` | `~/.local/share/cocoapods` |
+| Zsh config | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
+| Zsh history | `~/.zsh_history` | `~/.local/state/zsh/history` |
+| Zsh sessions | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
+| Zsh completion dump | `~/.zcompdump*` | `~/.config/zsh/` |
 
 ---
 
