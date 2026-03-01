@@ -197,26 +197,26 @@ Ansible's temporary files are created in `~/.cache/ansible/tmp` via environment 
 
 **Migration list (default path → XDG path):**
 
-| Tool | Default path | XDG path |
-|------|--------------|----------|
-| Homebrew | `~/Library/Caches/Homebrew` | `~/.cache/Homebrew` |
-| Ansible | `~/.ansible` | `~/.local/share/ansible` |
-| Android SDK | `~/.android` | `~/.local/share/android` |
-| Gradle | `~/.gradle` | `~/.local/share/gradle` |
-| Docker | `~/.docker` | `~/.config/docker` |
-| mise | `~/.mise` | `~/.local/share/mise` |
-| hadolint | `~/.hadolint.yaml` | `~/.config/hadolint.yaml` |
-| npm | `~/.npm` | `~/.cache/npm` |
-| npm | `~/.npmrc` | `~/.config/npm/npmrc` |
-| Flutter/Dart (`pub`) | `~/.pub-cache` | `~/.cache/pub` |
-| pip | `~/.pip` | `~/.config/pip` |
-| pip | `~/Library/Caches/pip` | `~/.cache/pip` |
-| RubyGems | `~/.gem` | `~/.cache/gem` |
-| CocoaPods | `~/.cocoapods` | `~/.local/share/cocoapods` |
-| Zsh config | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
-| Zsh history | `~/.zsh_history` | `~/.local/state/zsh/history` |
-| Zsh sessions | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
-| Zsh completion dump | `~/.zcompdump*` | `~/.config/zsh/` |
+| Tool | Category | Default path | XDG path |
+|------|----------|--------------|----------|
+| Homebrew | Cache | `~/Library/Caches/Homebrew` | `~/.cache/Homebrew` |
+| Ansible | Data | `~/.ansible` | `~/.local/share/ansible` |
+| Android SDK | Data | `~/.android` | `~/.local/share/android` |
+| Gradle | Data | `~/.gradle` | `~/.local/share/gradle` |
+| Docker | Config | `~/.docker` | `~/.config/docker` |
+| mise | Data | `~/.mise` | `~/.local/share/mise` |
+| hadolint | Config | `~/.hadolint.yaml` | `~/.config/hadolint.yaml` |
+| npm | Cache | `~/.npm` | `~/.cache/npm` |
+| npm | Config | `~/.npmrc` | `~/.config/npm/npmrc` |
+| Flutter/Dart (`pub`) | Cache | `~/.pub-cache` | `~/.cache/pub` |
+| pip | Config | `~/.pip` | `~/.config/pip` |
+| pip | Cache | `~/Library/Caches/pip` | `~/.cache/pip` |
+| RubyGems | Cache | `~/.gem` | `~/.cache/gem` |
+| CocoaPods | Data | `~/.cocoapods` | `~/.local/share/cocoapods` |
+| Zsh | Config | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
+| Zsh | History | `~/.zsh_history` | `~/.local/state/zsh/history` |
+| Zsh | Sessions | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
+| Zsh | Completion cache | `~/.zcompdump*` | `~/.config/zsh/` |
 
 ---
 
