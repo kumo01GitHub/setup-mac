@@ -39,6 +39,7 @@
   loop:
     - /usr/local/bin
     - /usr/local/cli-plugins
+  when: "'docker' in homebrew_cask_apps"
 
 - name: Install Homebrew cask apps
   homebrew_cask:
