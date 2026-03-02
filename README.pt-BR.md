@@ -1,19 +1,17 @@
 # setup-mac
 
-[![CI](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml/badge.svg)](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+Idiomas: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
 
-Languages: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
-
-This repository sets up a macOS development environment.  
-It combines dotfiles and Ansible so you can bootstrap a new Mac quickly and consistently.
+Este repositório configura um ambiente de desenvolvimento macOS.  
+Ele combina dotfiles e Ansible para que você possa preparar um novo Mac de forma rápida e consistente.
 
 ---
 
-## 📁 Directory Structure
+## 📁 Estrutura de diretórios
 
 ```
 setup-mac/
-├── dotfiles/           # Configuration files
+├── dotfiles/           # Arquivos de configuração
 │   ├── .zshenv
 │   ├── .gitconfig
 │   ├── .config/
@@ -26,12 +24,12 @@ setup-mac/
 │   │   ├── wezterm/
 │   │   │   └── wezterm.lua
 │   │   └── starship.toml
-├── ansible/            # Ansible playbooks
+├── ansible/            # Playbooks Ansible
 │   ├── site.yml
 │   └── roles/
 │       ├── homebrew/
 │       ├── vscode_extensions/
-│       ├── mise/       # Toolchain setup via mise
+│       ├── mise/       # Configuração de toolchain via mise
 │       ├── macos/
 │       ├── dotfiles/
 │       └── xdg_normalize/
@@ -45,16 +43,16 @@ setup-mac/
 
 ---
 
-## 🚀 Usage
+## 🚀 Uso
 
-### Prerequisites
+### Pré-requisitos
 
-- macOS (Apple Silicon and Intel supported)
-- Internet connection
+- macOS (suporte para Apple Silicon e Intel)
+- Conexão com a internet
 
 ---
 
-### 1. Clone the repository
+### 1. Clonar o repositório
 
 ```bash
 git clone https://github.com/kumo01GitHub/setup-mac.git ~/setup-mac
@@ -63,64 +61,64 @@ cd ~/setup-mac
 
 ---
 
-### 2. Install Homebrew / Ansible
+### 2. Instalar Homebrew / Ansible
 
-Install Homebrew:
+Instalar Homebrew:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Install Ansible:
+Instalar Ansible:
 
 ```bash
 brew install ansible
 ```
 
-### 3. Run the Ansible playbook
+### 3. Executar o playbook Ansible
 
 ```bash
 cd ~/setup-mac/ansible
 ansible-playbook site.yml
 ```
 
-If a task requires elevated privileges (for example, installing the `docker` cask), include `--ask-become-pass`:
+Se alguma tarefa exigir privilégios elevados (por exemplo, instalar o cask `docker`), inclua `--ask-become-pass`:
 
 ```bash
 ansible-playbook site.yml --ask-become-pass
 ```
 
-To run with Git identity values:
+Para executar com identidade Git:
 
-Git user name/email are resolved in this order:  
-1. CLI vars (`-e git_user_name=... -e git_user_email=...`)  
-2. Environment variables (`GIT_USER_NAME`, `GIT_USER_EMAIL`)  
-3. Interactive prompt at runtime when still missing  
+Nome/e-mail do Git são resolvidos nesta ordem:  
+1. Variáveis CLI (`-e git_user_name=... -e git_user_email=...`)  
+2. Variáveis de ambiente (`GIT_USER_NAME`, `GIT_USER_EMAIL`)  
+3. Prompt interativo em tempo de execução, se ainda estiver ausente
 
 ```bash
 GIT_USER_NAME="Your Name" GIT_USER_EMAIL="your.email@example.com" ansible-playbook site.yml
 
-# or
+# ou
 ansible-playbook site.yml -e git_user_name="Your Name" -e git_user_email="your.email@example.com"
 ```
 
-### Add dotfiles
+### Adicionar dotfiles
 
-1. Add files under `dotfiles/`
-2. Add paths to `ansible/custom.yml` using `dotfiles_files_extra`
+1. Adicione arquivos em `dotfiles/`
+2. Adicione caminhos em `ansible/custom.yml` usando `dotfiles_files_extra`
 
-> Note: `.gitconfig` is managed separately via template.
+> Observação: `.gitconfig` é gerenciado separadamente por template.
 
-### Customize role variables with `custom.yml`
+### Personalizar variáveis de role com `custom.yml`
 
-You can add items to role defaults without editing `defaults/main.yml`, using only `ansible/custom.yml`.
+Você pode adicionar itens aos padrões das roles sem editar `defaults/main.yml`, usando apenas `ansible/custom.yml`.
 
-1. Edit `ansible/custom.yml`
-2. Add items using `*_extra` variables
+1. Edite `ansible/custom.yml`
+2. Adicione itens usando variáveis `*_extra`
 
-`ansible/site.yml` automatically loads `ansible/custom.yml` before roles run.
+`ansible/site.yml` carrega automaticamente `ansible/custom.yml` antes de executar as roles.
 
-Example: `ansible/custom.yml`
+Exemplo: `ansible/custom.yml`
 
 ```yaml
 homebrew_packages_extra:
@@ -139,12 +137,12 @@ dotfiles_files_extra:
     - .config/mytool/config.toml
 ```
 
-### Edit `zsh` configuration
+### Editar configuração do `zsh`
 
-Edit `dotfiles/.config/zsh/.zshrc` for shell customization.  
-`dotfiles/.zshenv` contains the minimal, early-loaded settings (XDG variables and `ZDOTDIR`).
+Edite `dotfiles/.config/zsh/.zshrc` para personalizar o shell.  
+`dotfiles/.zshenv` contém as configurações mínimas carregadas cedo (variáveis XDG e `ZDOTDIR`).
 
-To apply changes, open a new terminal or run:
+Para aplicar alterações, abra um novo terminal ou execute:
 
 ```bash
 source ~/.config/zsh/.zshrc
@@ -152,11 +150,11 @@ source ~/.config/zsh/.zshrc
 
 ---
 
-## 📦 Main Installed Items
+## 📦 Principais itens instalados
 
-Items in this section can include optional tools/apps/extensions managed via `ansible/custom.yml` (`*_extra`).
+Os itens desta seção podem incluir ferramentas/apps/extensões opcionais gerenciadas por `ansible/custom.yml` (`*_extra`).
 
-### CLI tools (`brew`)
+### Ferramentas CLI (`brew`)
 
 | Package | Description |
 |---------|-------------|
@@ -175,7 +173,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | [delta](https://github.com/dandavison/delta) | Git diff viewer |
 | [sheldon](https://github.com/rossmacarthur/sheldon) | Zsh plugin manager |
 
-### Applications (`brew cask`)
+### Aplicações (`brew cask`)
 
 | Application | Description |
 |-------------|-------------|
@@ -186,7 +184,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads) | Development font |
 | [Android Studio](https://developer.android.com/studio) | Android IDE |
 
-### VS Code extensions (installed via `code` CLI)
+### Extensões do VS Code (instaladas via `code` CLI)
 
 | Extension | ID |
 |-----------|----|
@@ -206,7 +204,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | YAML | `redhat.vscode-yaml` |
 | XML | `redhat.vscode-xml` |
 
-### Toolchains managed by `mise`
+### Toolchains gerenciados por `mise`
 
 - [`ruby@latest`](https://www.ruby-lang.org/)
 - [`node@latest`](https://nodejs.org/)
@@ -217,24 +215,24 @@ Items in this section can include optional tools/apps/extensions managed via `an
 
 ---
 
-## 🖥️ macOS System Preferences
+## 🖥️ Preferências do sistema macOS
 
-The playbook applies the following settings:
+O playbook aplica as seguintes configurações:
 
-- Enable Dock auto-hide
-- Rebuild Dock items from the app list defined in `ansible/roles/macos/tasks/main.yml`
-- Hide recent apps in Dock (non-pinned apps disappear when closed)
-- Show hidden files in Finder
-- Always show file extensions
+- Ativar auto-ocultação do Dock
+- Reconstruir itens do Dock a partir da lista de apps definida em `ansible/roles/macos/tasks/main.yml`
+- Ocultar apps recentes no Dock (apps não fixados desaparecem ao fechar)
+- Mostrar arquivos ocultos no Finder
+- Sempre mostrar extensões de arquivo
 
 ---
 
-## 🧹 XDG Normalization
+## 🧹 Normalização XDG
 
-The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locations and removes legacy paths.
+A role `xdg_normalize` migra caminhos padrão não XDG para locais compatíveis com XDG e remove caminhos legados.
 
 
-**Migration list (default path → XDG path):**
+**Lista de migração (caminho padrão → caminho XDG):**
 
 | Tool | Category | Default path | XDG path |
 |------|----------|--------------|----------|
@@ -261,6 +259,6 @@ The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locat
 
 ---
 
-## 📄 License
+## 📄 Licença
 
 [MIT License](LICENSE)

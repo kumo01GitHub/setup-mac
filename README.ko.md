@@ -1,19 +1,17 @@
 # setup-mac
 
-[![CI](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml/badge.svg)](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+언어: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
 
-Languages: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
-
-This repository sets up a macOS development environment.  
-It combines dotfiles and Ansible so you can bootstrap a new Mac quickly and consistently.
+이 저장소는 macOS 개발 환경을 설정하기 위한 프로젝트입니다.  
+dotfiles와 Ansible을 결합해 새 Mac을 빠르고 일관되게 부트스트랩할 수 있습니다.
 
 ---
 
-## 📁 Directory Structure
+## 📁 디렉터리 구조
 
 ```
 setup-mac/
-├── dotfiles/           # Configuration files
+├── dotfiles/           # 설정 파일
 │   ├── .zshenv
 │   ├── .gitconfig
 │   ├── .config/
@@ -26,12 +24,12 @@ setup-mac/
 │   │   ├── wezterm/
 │   │   │   └── wezterm.lua
 │   │   └── starship.toml
-├── ansible/            # Ansible playbooks
+├── ansible/            # Ansible 플레이북
 │   ├── site.yml
 │   └── roles/
 │       ├── homebrew/
 │       ├── vscode_extensions/
-│       ├── mise/       # Toolchain setup via mise
+│       ├── mise/       # mise로 툴체인 설정
 │       ├── macos/
 │       ├── dotfiles/
 │       └── xdg_normalize/
@@ -45,16 +43,16 @@ setup-mac/
 
 ---
 
-## 🚀 Usage
+## 🚀 사용 방법
 
-### Prerequisites
+### 사전 요구 사항
 
-- macOS (Apple Silicon and Intel supported)
-- Internet connection
+- macOS (Apple Silicon 및 Intel 지원)
+- 인터넷 연결
 
 ---
 
-### 1. Clone the repository
+### 1. 저장소 클론
 
 ```bash
 git clone https://github.com/kumo01GitHub/setup-mac.git ~/setup-mac
@@ -63,64 +61,64 @@ cd ~/setup-mac
 
 ---
 
-### 2. Install Homebrew / Ansible
+### 2. Homebrew / Ansible 설치
 
-Install Homebrew:
+Homebrew 설치:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Install Ansible:
+Ansible 설치:
 
 ```bash
 brew install ansible
 ```
 
-### 3. Run the Ansible playbook
+### 3. Ansible 플레이북 실행
 
 ```bash
 cd ~/setup-mac/ansible
 ansible-playbook site.yml
 ```
 
-If a task requires elevated privileges (for example, installing the `docker` cask), include `--ask-become-pass`:
+권한 상승이 필요한 작업(예: `docker` cask 설치)이 있으면 `--ask-become-pass`를 추가하세요:
 
 ```bash
 ansible-playbook site.yml --ask-become-pass
 ```
 
-To run with Git identity values:
+Git 사용자 정보로 실행하려면:
 
-Git user name/email are resolved in this order:  
-1. CLI vars (`-e git_user_name=... -e git_user_email=...`)  
-2. Environment variables (`GIT_USER_NAME`, `GIT_USER_EMAIL`)  
-3. Interactive prompt at runtime when still missing  
+Git 사용자 이름/이메일은 다음 순서로 결정됩니다.  
+1. CLI 변수 (`-e git_user_name=... -e git_user_email=...`)  
+2. 환경 변수 (`GIT_USER_NAME`, `GIT_USER_EMAIL`)  
+3. 여전히 없으면 실행 중 프롬프트 입력
 
 ```bash
 GIT_USER_NAME="Your Name" GIT_USER_EMAIL="your.email@example.com" ansible-playbook site.yml
 
-# or
+# 또는
 ansible-playbook site.yml -e git_user_name="Your Name" -e git_user_email="your.email@example.com"
 ```
 
-### Add dotfiles
+### dotfiles 추가
 
-1. Add files under `dotfiles/`
-2. Add paths to `ansible/custom.yml` using `dotfiles_files_extra`
+1. `dotfiles/` 아래에 파일 추가
+2. `ansible/custom.yml`의 `dotfiles_files_extra`에 경로 추가
 
-> Note: `.gitconfig` is managed separately via template.
+> 참고: `.gitconfig`는 템플릿으로 별도 관리됩니다.
 
-### Customize role variables with `custom.yml`
+### `custom.yml`로 롤 변수 커스터마이즈
 
-You can add items to role defaults without editing `defaults/main.yml`, using only `ansible/custom.yml`.
+`defaults/main.yml`을 직접 수정하지 않고 `ansible/custom.yml`만으로 기본값을 확장할 수 있습니다.
 
-1. Edit `ansible/custom.yml`
-2. Add items using `*_extra` variables
+1. `ansible/custom.yml` 편집
+2. `*_extra` 변수로 항목 추가
 
-`ansible/site.yml` automatically loads `ansible/custom.yml` before roles run.
+`ansible/site.yml`은 롤 실행 전에 `ansible/custom.yml`을 자동 로드합니다.
 
-Example: `ansible/custom.yml`
+예시: `ansible/custom.yml`
 
 ```yaml
 homebrew_packages_extra:
@@ -139,12 +137,12 @@ dotfiles_files_extra:
     - .config/mytool/config.toml
 ```
 
-### Edit `zsh` configuration
+### `zsh` 설정 편집
 
-Edit `dotfiles/.config/zsh/.zshrc` for shell customization.  
-`dotfiles/.zshenv` contains the minimal, early-loaded settings (XDG variables and `ZDOTDIR`).
+셸 커스터마이즈는 `dotfiles/.config/zsh/.zshrc`를 수정하세요.  
+`dotfiles/.zshenv`에는 최소한의 초기 로드 설정(XDG 변수 및 `ZDOTDIR`)이 들어 있습니다.
 
-To apply changes, open a new terminal or run:
+변경 적용은 새 터미널을 열거나 다음을 실행하세요:
 
 ```bash
 source ~/.config/zsh/.zshrc
@@ -152,11 +150,11 @@ source ~/.config/zsh/.zshrc
 
 ---
 
-## 📦 Main Installed Items
+## 📦 주요 설치 항목
 
-Items in this section can include optional tools/apps/extensions managed via `ansible/custom.yml` (`*_extra`).
+이 섹션의 항목에는 `ansible/custom.yml`의 `*_extra`로 관리되는 선택 도구/앱/확장도 포함될 수 있습니다.
 
-### CLI tools (`brew`)
+### CLI 도구 (`brew`)
 
 | Package | Description |
 |---------|-------------|
@@ -175,7 +173,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | [delta](https://github.com/dandavison/delta) | Git diff viewer |
 | [sheldon](https://github.com/rossmacarthur/sheldon) | Zsh plugin manager |
 
-### Applications (`brew cask`)
+### 애플리케이션 (`brew cask`)
 
 | Application | Description |
 |-------------|-------------|
@@ -186,7 +184,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads) | Development font |
 | [Android Studio](https://developer.android.com/studio) | Android IDE |
 
-### VS Code extensions (installed via `code` CLI)
+### VS Code 확장 (`code` CLI로 설치)
 
 | Extension | ID |
 |-----------|----|
@@ -206,7 +204,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | YAML | `redhat.vscode-yaml` |
 | XML | `redhat.vscode-xml` |
 
-### Toolchains managed by `mise`
+### `mise`로 관리하는 툴체인
 
 - [`ruby@latest`](https://www.ruby-lang.org/)
 - [`node@latest`](https://nodejs.org/)
@@ -217,24 +215,24 @@ Items in this section can include optional tools/apps/extensions managed via `an
 
 ---
 
-## 🖥️ macOS System Preferences
+## 🖥️ macOS 시스템 설정
 
-The playbook applies the following settings:
+플레이북은 다음 설정을 적용합니다.
 
-- Enable Dock auto-hide
-- Rebuild Dock items from the app list defined in `ansible/roles/macos/tasks/main.yml`
-- Hide recent apps in Dock (non-pinned apps disappear when closed)
-- Show hidden files in Finder
-- Always show file extensions
+- Dock 자동 숨김 활성화
+- `ansible/roles/macos/tasks/main.yml`에 정의된 앱 목록으로 Dock 재구성
+- Dock 최근 앱 숨김(고정되지 않은 앱은 종료 시 사라짐)
+- Finder에서 숨김 파일 표시
+- 파일 확장자 항상 표시
 
 ---
 
-## 🧹 XDG Normalization
+## 🧹 XDG 정규화
 
-The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locations and removes legacy paths.
+`xdg_normalize` 롤은 기본 비XDG 경로를 XDG 준수 경로로 마이그레이션하고 레거시 경로를 제거합니다.
 
 
-**Migration list (default path → XDG path):**
+**마이그레이션 목록(기본 경로 → XDG 경로):**
 
 | Tool | Category | Default path | XDG path |
 |------|----------|--------------|----------|
@@ -261,6 +259,6 @@ The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locat
 
 ---
 
-## 📄 License
+## 📄 라이선스
 
 [MIT License](LICENSE)

@@ -1,6 +1,6 @@
 # setup-mac
 
-言語: [English](README.md) | [日本語](README.ja.md)
+言語: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
 
 Macの環境をセットアップするためのリポジトリです。  
 dotfiles（設定ファイル群）と Ansible を組み合わせて、新しい Mac をすばやく自分好みに整えることができます。
@@ -34,7 +34,11 @@ setup-mac/
 │       ├── dotfiles/   # dotfilesの上書きコピー設定
 │       └── xdg_normalize/ # XDG非準拠ディレクトリの正規化
 ├── README.md
-└── README.ja.md
+├── README.ja.md
+├── README.zh-CN.md
+├── README.ko.md
+├── README.es.md
+└── README.pt-BR.md
 ```
 
 ---

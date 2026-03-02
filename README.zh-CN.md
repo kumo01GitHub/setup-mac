@@ -1,19 +1,17 @@
 # setup-mac
 
-[![CI](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml/badge.svg)](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+语言: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
 
-Languages: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
-
-This repository sets up a macOS development environment.  
-It combines dotfiles and Ansible so you can bootstrap a new Mac quickly and consistently.
+此仓库用于搭建 macOS 开发环境。  
+它将 dotfiles 与 Ansible 结合，让你可以快速且一致地初始化一台新 Mac。
 
 ---
 
-## 📁 Directory Structure
+## 📁 目录结构
 
 ```
 setup-mac/
-├── dotfiles/           # Configuration files
+├── dotfiles/           # 配置文件
 │   ├── .zshenv
 │   ├── .gitconfig
 │   ├── .config/
@@ -26,12 +24,12 @@ setup-mac/
 │   │   ├── wezterm/
 │   │   │   └── wezterm.lua
 │   │   └── starship.toml
-├── ansible/            # Ansible playbooks
+├── ansible/            # Ansible playbook
 │   ├── site.yml
 │   └── roles/
 │       ├── homebrew/
 │       ├── vscode_extensions/
-│       ├── mise/       # Toolchain setup via mise
+│       ├── mise/       # 使用 mise 配置工具链
 │       ├── macos/
 │       ├── dotfiles/
 │       └── xdg_normalize/
@@ -45,16 +43,16 @@ setup-mac/
 
 ---
 
-## 🚀 Usage
+## 🚀 使用方法
 
-### Prerequisites
+### 前置条件
 
-- macOS (Apple Silicon and Intel supported)
-- Internet connection
+- macOS（支持 Apple Silicon 和 Intel）
+- 网络连接
 
 ---
 
-### 1. Clone the repository
+### 1. 克隆仓库
 
 ```bash
 git clone https://github.com/kumo01GitHub/setup-mac.git ~/setup-mac
@@ -63,64 +61,64 @@ cd ~/setup-mac
 
 ---
 
-### 2. Install Homebrew / Ansible
+### 2. 安装 Homebrew / Ansible
 
-Install Homebrew:
+安装 Homebrew：
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Install Ansible:
+安装 Ansible：
 
 ```bash
 brew install ansible
 ```
 
-### 3. Run the Ansible playbook
+### 3. 运行 Ansible playbook
 
 ```bash
 cd ~/setup-mac/ansible
 ansible-playbook site.yml
 ```
 
-If a task requires elevated privileges (for example, installing the `docker` cask), include `--ask-become-pass`:
+如果某些任务需要提升权限（例如安装 `docker` cask），请加上 `--ask-become-pass`：
 
 ```bash
 ansible-playbook site.yml --ask-become-pass
 ```
 
-To run with Git identity values:
+如果要带 Git 身份信息执行：
 
-Git user name/email are resolved in this order:  
-1. CLI vars (`-e git_user_name=... -e git_user_email=...`)  
-2. Environment variables (`GIT_USER_NAME`, `GIT_USER_EMAIL`)  
-3. Interactive prompt at runtime when still missing  
+Git 用户名/邮箱按以下顺序解析：  
+1. CLI 变量（`-e git_user_name=... -e git_user_email=...`）  
+2. 环境变量（`GIT_USER_NAME`, `GIT_USER_EMAIL`）  
+3. 仍缺失时在运行期间交互输入
 
 ```bash
 GIT_USER_NAME="Your Name" GIT_USER_EMAIL="your.email@example.com" ansible-playbook site.yml
 
-# or
+# 或
 ansible-playbook site.yml -e git_user_name="Your Name" -e git_user_email="your.email@example.com"
 ```
 
-### Add dotfiles
+### 添加 dotfiles
 
-1. Add files under `dotfiles/`
-2. Add paths to `ansible/custom.yml` using `dotfiles_files_extra`
+1. 将文件添加到 `dotfiles/`
+2. 在 `ansible/custom.yml` 的 `dotfiles_files_extra` 中添加路径
 
-> Note: `.gitconfig` is managed separately via template.
+> 注意：`.gitconfig` 通过模板单独管理。
 
-### Customize role variables with `custom.yml`
+### 使用 `custom.yml` 自定义角色变量
 
-You can add items to role defaults without editing `defaults/main.yml`, using only `ansible/custom.yml`.
+无需修改 `defaults/main.yml`，你可以只通过 `ansible/custom.yml` 追加默认项。
 
-1. Edit `ansible/custom.yml`
-2. Add items using `*_extra` variables
+1. 编辑 `ansible/custom.yml`
+2. 使用 `*_extra` 变量添加项目
 
-`ansible/site.yml` automatically loads `ansible/custom.yml` before roles run.
+`ansible/site.yml` 会在角色执行前自动加载 `ansible/custom.yml`。
 
-Example: `ansible/custom.yml`
+示例：`ansible/custom.yml`
 
 ```yaml
 homebrew_packages_extra:
@@ -139,12 +137,12 @@ dotfiles_files_extra:
     - .config/mytool/config.toml
 ```
 
-### Edit `zsh` configuration
+### 编辑 `zsh` 配置
 
-Edit `dotfiles/.config/zsh/.zshrc` for shell customization.  
-`dotfiles/.zshenv` contains the minimal, early-loaded settings (XDG variables and `ZDOTDIR`).
+通过编辑 `dotfiles/.config/zsh/.zshrc` 来自定义 shell。  
+`dotfiles/.zshenv` 包含最小且最早加载的配置（XDG 变量与 `ZDOTDIR`）。
 
-To apply changes, open a new terminal or run:
+应用变更时，打开新终端或运行：
 
 ```bash
 source ~/.config/zsh/.zshrc
@@ -152,11 +150,11 @@ source ~/.config/zsh/.zshrc
 
 ---
 
-## 📦 Main Installed Items
+## 📦 主要安装项
 
-Items in this section can include optional tools/apps/extensions managed via `ansible/custom.yml` (`*_extra`).
+本节中的项目可包含通过 `ansible/custom.yml`（`*_extra`）管理的可选工具/应用/扩展。
 
-### CLI tools (`brew`)
+### CLI 工具（`brew`）
 
 | Package | Description |
 |---------|-------------|
@@ -175,7 +173,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | [delta](https://github.com/dandavison/delta) | Git diff viewer |
 | [sheldon](https://github.com/rossmacarthur/sheldon) | Zsh plugin manager |
 
-### Applications (`brew cask`)
+### 应用（`brew cask`）
 
 | Application | Description |
 |-------------|-------------|
@@ -186,7 +184,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads) | Development font |
 | [Android Studio](https://developer.android.com/studio) | Android IDE |
 
-### VS Code extensions (installed via `code` CLI)
+### VS Code 扩展（通过 `code` CLI 安装）
 
 | Extension | ID |
 |-----------|----|
@@ -206,7 +204,7 @@ Items in this section can include optional tools/apps/extensions managed via `an
 | YAML | `redhat.vscode-yaml` |
 | XML | `redhat.vscode-xml` |
 
-### Toolchains managed by `mise`
+### 由 `mise` 管理的工具链
 
 - [`ruby@latest`](https://www.ruby-lang.org/)
 - [`node@latest`](https://nodejs.org/)
@@ -217,24 +215,24 @@ Items in this section can include optional tools/apps/extensions managed via `an
 
 ---
 
-## 🖥️ macOS System Preferences
+## 🖥️ macOS 系统偏好设置
 
-The playbook applies the following settings:
+playbook 会应用以下设置：
 
-- Enable Dock auto-hide
-- Rebuild Dock items from the app list defined in `ansible/roles/macos/tasks/main.yml`
-- Hide recent apps in Dock (non-pinned apps disappear when closed)
-- Show hidden files in Finder
-- Always show file extensions
+- 启用 Dock 自动隐藏
+- 按 `ansible/roles/macos/tasks/main.yml` 中定义的应用列表重建 Dock 项
+- 在 Dock 中隐藏最近使用的应用（未固定应用关闭后会消失）
+- 在 Finder 中显示隐藏文件
+- 始终显示文件扩展名
 
 ---
 
-## 🧹 XDG Normalization
+## 🧹 XDG 规范化
 
-The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locations and removes legacy paths.
+`xdg_normalize` 角色会将默认的非 XDG 路径迁移到符合 XDG 的路径，并删除旧路径。
 
 
-**Migration list (default path → XDG path):**
+**迁移列表（默认路径 → XDG 路径）：**
 
 | Tool | Category | Default path | XDG path |
 |------|----------|--------------|----------|
@@ -261,6 +259,6 @@ The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locat
 
 ---
 
-## 📄 License
+## 📄 许可证
 
 [MIT License](LICENSE)
