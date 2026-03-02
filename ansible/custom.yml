@@ -50,6 +50,12 @@ vscode_extensions_list_extra:
   - redhat.vscode-yaml
   - redhat.vscode-xml
 
+# Optional dotfiles additions
+# dotfiles_files_extra is used for actual file copy from dotfiles/.
+# .gitconfig is handled separately via template in dotfiles role.
+# dotfiles_files_extra:
+#   - .config/mytool/config.toml
+
 # Optional Dock items
 macos_dock_apps_extra:
   - /System/Applications/Apps.app

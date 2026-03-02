@@ -101,7 +101,9 @@ ansible-playbook site.yml -e git_user_name="Your Name" -e git_user_email="your.e
 ### Add dotfiles
 
 1. Add files under `dotfiles/`
-2. Add each target file to the `loop` in `ansible/roles/dotfiles/tasks/main.yml`
+2. Add paths to `ansible/custom.yml` using `dotfiles_files_extra`
+
+> Note: `.gitconfig` is managed separately via template.
 
 ### Customize role variables with `custom.yml`
 
@@ -126,6 +128,9 @@ mise_plugins_extra:
 
 mise_toolchains_extra:
     - go@latest
+
+dotfiles_files_extra:
+    - .config/mytool/config.toml
 ```
 
 ### Edit `zsh` configuration

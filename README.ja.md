@@ -125,12 +125,17 @@ mise_plugins_extra:
 
 mise_toolchains_extra:
   - go@latest
+
+dotfiles_files_extra:
+  - .config/mytool/config.toml
 ```
 
 ### dotfiles を追加する
 
 1. `dotfiles/` ディレクトリに設定ファイルを追加する
-2. `ansible/roles/dotfiles/tasks/main.yml` の `loop` にファイル名を追加する
+2. `ansible/custom.yml` の `dotfiles_files_extra` にパスを追加する
+
+> 注: `.gitconfig` はテンプレートで別管理されます。
 
 ### `zsh` の設定を編集する
 

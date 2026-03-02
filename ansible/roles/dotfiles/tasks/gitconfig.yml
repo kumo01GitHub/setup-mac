@@ -1,0 +1,19 @@
+---
+# ansible/roles/dotfiles/tasks/gitconfig.yml
+
+- name: Remove existing .gitconfig symlink
+  stat:
+    path: "{{ ansible_facts['env']['HOME'] }}/.gitconfig"
+  register: gitconfig_destination_stat
+
+- name: Delete existing .gitconfig symlink
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.gitconfig"
+    state: absent
+  when: gitconfig_destination_stat.stat.islnk | default(false)
+
+- name: Render .gitconfig with custom identity
+  template:
+    src: gitconfig.j2
+    dest: "{{ ansible_facts['env']['HOME'] }}/.gitconfig"
+    mode: '0644'

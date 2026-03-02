@@ -2,63 +2,8 @@
 # ansible/roles/dotfiles/tasks/main.yml
 # Copy dotfiles to home directory
 
-- name: Set dotfiles directory path
-  set_fact:
-    dotfiles_dir: "{{ playbook_dir }}/../dotfiles"
+- name: Copy regular dotfiles
+  include_tasks: copy.yml
 
-- name: Create parent directories for dotfiles
-  file:
-    path: "{{ (ansible_facts['env']['HOME'] ~ '/' ~ item) | dirname }}"
-    state: directory
-    mode: '0755'
-  loop:
-    - .vimrc
-    - .zshenv
-    - .config/zsh/.zshrc
-    - .gitconfig
-    - .config/git/config
-    - .config/sheldon/plugins.toml
-    - .config/wezterm/wezterm.lua
-    - .config/starship.toml
-
-- name: Collect current dotfile destination stats
-  stat:
-    path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
-  loop:
-    - .vimrc
-    - .zshenv
-    - .config/zsh/.zshrc
-    - .gitconfig
-    - .config/git/config
-    - .config/sheldon/plugins.toml
-    - .config/wezterm/wezterm.lua
-    - .config/starship.toml
-  register: dotfile_destination_stats
-
-- name: Remove existing dotfile symlinks
-  file:
-    path: "{{ item.stat.path }}"
-    state: absent
-  loop: "{{ dotfile_destination_stats.results }}"
-  when: item.stat.islnk | default(false)
-
-- name: Render .gitconfig with custom identity
-  template:
-    src: gitconfig.j2
-    dest: "{{ ansible_facts['env']['HOME'] }}/.gitconfig"
-    mode: '0644'
-
-- name: Copy dotfiles to home directory
-  copy:
-    src: "{{ dotfiles_dir }}/{{ item }}"
-    dest: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
-    force: true
-    mode: preserve
-  loop:
-    - .vimrc
-    - .zshenv
-    - .config/zsh/.zshrc
-    - .config/git/config
-    - .config/sheldon/plugins.toml
-    - .config/wezterm/wezterm.lua
-    - .config/starship.toml
+- name: Render gitconfig from template
+  include_tasks: gitconfig.yml

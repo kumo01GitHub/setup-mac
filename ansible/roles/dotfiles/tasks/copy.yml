@@ -1,0 +1,35 @@
+---
+# ansible/roles/dotfiles/tasks/copy.yml
+
+- name: Set dotfiles variables
+  set_fact:
+    dotfiles_dir: "{{ playbook_dir }}/../dotfiles"
+    dotfiles_files_effective: "{{ (dotfiles_files + (custom.dotfiles_files_extra | default([]))) | unique }}"
+
+- name: Ensure dotfile parent directories
+  file:
+    path: "{{ (ansible_facts['env']['HOME'] ~ '/' ~ item) | dirname }}"
+    state: directory
+    mode: '0755'
+  loop: "{{ dotfiles_files_effective }}"
+
+- name: Stat dotfile destinations
+  stat:
+    path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+  loop: "{{ dotfiles_files_effective }}"
+  register: dotfile_destination_stats
+
+- name: Remove dotfile symlinks
+  file:
+    path: "{{ item.stat.path }}"
+    state: absent
+  loop: "{{ dotfile_destination_stats.results }}"
+  when: item.stat.islnk | default(false)
+
+- name: Copy dotfiles to home directory
+  copy:
+    src: "{{ dotfiles_dir }}/{{ item }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+    force: true
+    mode: preserve
+  loop: "{{ dotfiles_files_effective }}"

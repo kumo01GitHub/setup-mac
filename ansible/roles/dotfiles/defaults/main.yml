@@ -1,0 +1,12 @@
+---
+# ansible/roles/dotfiles/defaults/main.yml
+
+# Dotfiles copied as static files from ../dotfiles.
+dotfiles_files:
+  - .vimrc
+  - .zshenv
+  - .config/zsh/.zshrc
+  - .config/git/config
+  - .config/sheldon/plugins.toml
+  - .config/wezterm/wezterm.lua
+  - .config/starship.toml
