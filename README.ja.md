@@ -1,6 +1,6 @@
 # setup-mac
 
-言語: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
+言語: [English](README.md) | [日本語](README.ja.md)
 
 Macの環境をセットアップするためのリポジトリです。  
 dotfiles（設定ファイル群）と Ansible を組み合わせて、新しい Mac をすばやく自分好みに整えることができます。
@@ -14,31 +14,25 @@ setup-mac/
 ├── dotfiles/           # 設定ファイル群
 │   ├── .zshenv         # Zshの早期設定（XDGとZDOTDIR）
 │   ├── .gitconfig      # Gitの設定
-│   ├── .config/
-│   │   ├── zsh/
-│   │   │   └── .zshrc  # Zshの設定
-│   │   ├── git/
-│   │   │   └── config  # GitのXDG設定
-│   │   ├── sheldon/
-│   │   │   └── plugins.toml # Zshプラグイン設定
-│   │   ├── wezterm/
-│   │   │   └── wezterm.lua # WezTermの設定
-│   │   └── starship.toml # Starshipの設定
-├── ansible/            # Ansible プレイブック
-│   ├── site.yml        # メインプレイブック
-│   └── roles/
-│       ├── homebrew/   # Homebrew・パッケージインストール
-│       ├── vscode_extensions/ # VS Code拡張機能のインストール
-│       ├── mise/       # miseでツールチェーンをセットアップ
-│       ├── macos/      # macOSシステム設定
-│       ├── dotfiles/   # dotfilesの上書きコピー設定
-│       └── xdg_normalize/ # XDG非準拠ディレクトリの正規化
-├── README.md
-├── README.ja.md
-├── README.zh-CN.md
-├── README.ko.md
-├── README.es.md
-└── README.pt-BR.md
+│   └── .config/
+│       ├── zsh/
+│       │   └── .zshrc  # Zshの設定
+│       ├── git/
+│       │   └── config  # GitのXDG設定
+│       ├── sheldon/
+│       │   └── plugins.toml # Zshプラグイン設定
+│       ├── wezterm/
+│       │   └── wezterm.lua # WezTermの設定
+│       └── starship.toml # Starshipの設定
+└── ansible/            # Ansible プレイブック
+    ├── site.yml        # メインプレイブック
+    └── roles/
+        ├── homebrew/   # Homebrew・パッケージインストール
+        ├── vscode_extensions/ # VS Code拡張機能のインストール
+        ├── mise/       # miseでツールチェーンをセットアップ
+        ├── macos/      # macOSシステム設定
+        ├── dotfiles/   # dotfilesの上書きコピー設定
+        └── xdg_normalize/ # XDG非準拠ディレクトリの正規化
 ```
 
 ---

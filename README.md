@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml/badge.svg)](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Languages: [English](README.md) | [日本語](README.ja.md) | [中文](README.zh-CN.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt-BR.md)
+Languages: [English](README.md) | [日本語](README.ja.md)
 
 This repository sets up a macOS development environment.  
 It combines dotfiles and Ansible so you can bootstrap a new Mac quickly and consistently.
@@ -16,31 +16,25 @@ setup-mac/
 ├── dotfiles/           # Configuration files
 │   ├── .zshenv
 │   ├── .gitconfig
-│   ├── .config/
-│   │   ├── zsh/
-│   │   │   └── .zshrc
-│   │   ├── git/
-│   │   │   └── config
-│   │   ├── sheldon/
-│   │   │   └── plugins.toml
-│   │   ├── wezterm/
-│   │   │   └── wezterm.lua
-│   │   └── starship.toml
-├── ansible/            # Ansible playbooks
-│   ├── site.yml
-│   └── roles/
-│       ├── homebrew/
-│       ├── vscode_extensions/
-│       ├── mise/       # Toolchain setup via mise
-│       ├── macos/
-│       ├── dotfiles/
-│       └── xdg_normalize/
-├── README.md
-├── README.ja.md
-├── README.zh-CN.md
-├── README.ko.md
-├── README.es.md
-└── README.pt-BR.md
+│   └── .config/
+│       ├── zsh/
+│       │   └── .zshrc
+│       ├── git/
+│       │   └── config
+│       ├── sheldon/
+│       │   └── plugins.toml
+│       ├── wezterm/
+│       │   └── wezterm.lua
+│       └── starship.toml
+└── ansible/            # Ansible playbooks
+    ├── site.yml
+    └── roles/
+        ├── homebrew/
+        ├── vscode_extensions/
+        ├── mise/       # Toolchain setup via mise
+        ├── macos/
+        ├── dotfiles/
+        └── xdg_normalize/
 ```
 
 ---
