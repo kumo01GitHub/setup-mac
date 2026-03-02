@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  syntax-check:
+    name: Ansible syntax check
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Ansible with Homebrew
+        run: |
+          brew --version
+          brew install ansible
+
+      - name: Run ansible syntax check
+        run: |
+          ansible-playbook --syntax-check -i "localhost," ansible/site.yml
