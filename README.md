@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml/badge.svg)](https://github.com/kumo01GitHub/setup-mac/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Languages: [English](README.md) | [日本語](README.ja.md)
+Languages: [English](README.md) | [日本語](README.ja.md) | [Español](README.es.md) | [Português](README.pt.md) | [中文](README.zh.md) | [한국어](README.ko.md)
 
 This repository sets up a macOS development environment.  
 It combines dotfiles and Ansible so you can bootstrap a new Mac quickly and consistently.

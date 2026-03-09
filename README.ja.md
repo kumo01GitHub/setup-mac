@@ -1,6 +1,6 @@
 # setup-mac
 
-言語: [English](README.md) | [日本語](README.ja.md)
+言語: [English](README.md) | [日本語](README.ja.md) | [Español](README.es.md) | [Português](README.pt.md) | [中文](README.zh.md) | [한국어](README.ko.md)
 
 Macの環境をセットアップするためのリポジトリです。  
 dotfiles（設定ファイル群）と Ansible を組み合わせて、新しい Mac をすばやく自分好みに整えることができます。
