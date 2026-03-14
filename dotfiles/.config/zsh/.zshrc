@@ -51,6 +51,10 @@ export CP_HOME_DIR="${CP_HOME_DIR:-$XDG_DATA_HOME/cocoapods}"
 # Flutter / Dart
 export PUB_CACHE="${PUB_CACHE:-$XDG_CACHE_HOME/pub}"
 
+# AI tools (when supported by each CLI/app)
+export CLAUDE_CONFIG_DIR="${CLAUDE_CONFIG_DIR:-$XDG_CONFIG_HOME/claude}"
+export COPILOT_CONFIG_DIR="${COPILOT_CONFIG_DIR:-$XDG_CONFIG_HOME/copilot}"
+
 # Ensure state dir for history exists
 mkdir -p "$XDG_STATE_HOME/zsh"
 mkdir -p "$XDG_STATE_HOME/less" "$XDG_STATE_HOME/vim"

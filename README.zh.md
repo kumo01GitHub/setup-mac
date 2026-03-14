@@ -244,12 +244,16 @@ Playbook 会应用以下设置：
 | pip | 缓存 | `~/Library/Caches/pip` | `~/.cache/pip` |
 | RubyGems | 缓存 | `~/.gem` | `~/.cache/gem` |
 | CocoaPods | 数据 | `~/.cocoapods` | `~/.local/share/cocoapods` |
+| Claude | 配置 | `~/.claude` | `~/.config/claude` |
+| GitHub Copilot | 配置 | `~/.copilot` | `~/.config/copilot` |
 | less | 状态 | `~/.lesshst` | `~/.local/state/less/history` |
 | Vim | 状态 | `~/.viminfo` | `~/.local/state/vim/viminfo` |
 | Zsh | 配置 | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
 | Zsh | 历史 | `~/.zsh_history` | `~/.local/state/zsh/history` |
 | Zsh | 会话 | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
 | Zsh | 补全缓存 | `~/.zcompdump*` | `~/.config/zsh/` |
+
+注意：如果某些工具不支持 XDG 路径，仍可能在 `~` 下重新创建旧路径。
 
 ---
 

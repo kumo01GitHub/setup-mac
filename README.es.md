@@ -244,12 +244,16 @@ El rol `xdg_normalize` migra rutas predeterminadas no compatibles con XDG a ubic
 | pip | Caché | `~/Library/Caches/pip` | `~/.cache/pip` |
 | RubyGems | Caché | `~/.gem` | `~/.cache/gem` |
 | CocoaPods | Datos | `~/.cocoapods` | `~/.local/share/cocoapods` |
+| Claude | Configuración | `~/.claude` | `~/.config/claude` |
+| GitHub Copilot | Configuración | `~/.copilot` | `~/.config/copilot` |
 | less | Estado | `~/.lesshst` | `~/.local/state/less/history` |
 | Vim | Estado | `~/.viminfo` | `~/.local/state/vim/viminfo` |
 | Zsh | Configuración | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
 | Zsh | Historial | `~/.zsh_history` | `~/.local/state/zsh/history` |
 | Zsh | Sesiones | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
 | Zsh | Caché de completado | `~/.zcompdump*` | `~/.config/zsh/` |
+
+Nota: Algunas herramientas pueden volver a crear rutas heredadas en `~` si no admiten rutas XDG.
 
 ---
 

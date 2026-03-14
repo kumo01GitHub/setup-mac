@@ -246,12 +246,16 @@ The `xdg_normalize` role migrates default non-XDG paths into XDG-compliant locat
 | pip | Cache | `~/Library/Caches/pip` | `~/.cache/pip` |
 | RubyGems | Cache | `~/.gem` | `~/.cache/gem` |
 | CocoaPods | Data | `~/.cocoapods` | `~/.local/share/cocoapods` |
+| Claude | Config | `~/.claude` | `~/.config/claude` |
+| GitHub Copilot | Config | `~/.copilot` | `~/.config/copilot` |
 | less | State | `~/.lesshst` | `~/.local/state/less/history` |
 | Vim | State | `~/.viminfo` | `~/.local/state/vim/viminfo` |
 | Zsh | Config | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
 | Zsh | History | `~/.zsh_history` | `~/.local/state/zsh/history` |
 | Zsh | Sessions | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
 | Zsh | Completion cache | `~/.zcompdump*` | `~/.config/zsh/` |
+
+Note: Some tools may recreate legacy paths under `~` if they do not support XDG paths.
 
 ---
 

@@ -244,12 +244,16 @@ A role `xdg_normalize` migra caminhos padrão não compatíveis com XDG para loc
 | pip | Cache | `~/Library/Caches/pip` | `~/.cache/pip` |
 | RubyGems | Cache | `~/.gem` | `~/.cache/gem` |
 | CocoaPods | Dados | `~/.cocoapods` | `~/.local/share/cocoapods` |
+| Claude | Configuração | `~/.claude` | `~/.config/claude` |
+| GitHub Copilot | Configuração | `~/.copilot` | `~/.config/copilot` |
 | less | Estado | `~/.lesshst` | `~/.local/state/less/history` |
 | Vim | Estado | `~/.viminfo` | `~/.local/state/vim/viminfo` |
 | Zsh | Configuração | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
 | Zsh | Histórico | `~/.zsh_history` | `~/.local/state/zsh/history` |
 | Zsh | Sessões | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
 | Zsh | Cache de conclusão | `~/.zcompdump*` | `~/.config/zsh/` |
+
+Nota: Algumas ferramentas podem recriar caminhos legados em `~` se não oferecerem suporte a caminhos XDG.
 
 ---
 

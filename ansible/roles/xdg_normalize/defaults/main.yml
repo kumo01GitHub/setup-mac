@@ -24,6 +24,8 @@ xdg_normalize_directories:
   - .config/mise
   - .config/npm
   - .config/pip
+  - .config/claude
+  - .config/copilot
   - .local/state/Homebrew
   - .local/state/Homebrew/logs
   - .local/share/ansible
@@ -62,6 +64,10 @@ xdg_normalize_directory_migrations:
     target: .cache/gem
   - legacy: .cocoapods
     target: .local/share/cocoapods
+  - legacy: .claude
+    target: .config/claude
+  - legacy: .copilot
+    target: .config/copilot
   - legacy: .zsh_sessions
     target: .local/state/zsh/sessions
 

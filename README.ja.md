@@ -248,12 +248,16 @@ Ansible 実行時に以下の設定が適用されます。
 | pip | キャッシュ | `~/Library/Caches/pip` | `~/.cache/pip` |
 | RubyGems | キャッシュ | `~/.gem` | `~/.cache/gem` |
 | CocoaPods | データ | `~/.cocoapods` | `~/.local/share/cocoapods` |
+| Claude | 設定 | `~/.claude` | `~/.config/claude` |
+| GitHub Copilot | 設定 | `~/.copilot` | `~/.config/copilot` |
 | less | 状態 | `~/.lesshst` | `~/.local/state/less/history` |
 | Vim | 状態 | `~/.viminfo` | `~/.local/state/vim/viminfo` |
 | Zsh | 設定 | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
 | Zsh | 履歴 | `~/.zsh_history` | `~/.local/state/zsh/history` |
 | Zsh | セッション | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
 | Zsh | 補完キャッシュ | `~/.zcompdump*` | `~/.config/zsh/` |
+
+注: ツールがXDGパスに未対応の場合、`~` 直下にレガシーパスを再作成することがあります。
 
 ---
 

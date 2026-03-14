@@ -244,12 +244,16 @@ source ~/.config/zsh/.zshrc
 | pip | 캐시 | `~/Library/Caches/pip` | `~/.cache/pip` |
 | RubyGems | 캐시 | `~/.gem` | `~/.cache/gem` |
 | CocoaPods | 데이터 | `~/.cocoapods` | `~/.local/share/cocoapods` |
+| Claude | 설정 | `~/.claude` | `~/.config/claude` |
+| GitHub Copilot | 설정 | `~/.copilot` | `~/.config/copilot` |
 | less | 상태 | `~/.lesshst` | `~/.local/state/less/history` |
 | Vim | 상태 | `~/.viminfo` | `~/.local/state/vim/viminfo` |
 | Zsh | 설정 | `~/.zshrc`, `~/.zprofile`, `~/.zlogin`, `~/.zlogout` | `~/.config/zsh/` |
 | Zsh | 히스토리 | `~/.zsh_history` | `~/.local/state/zsh/history` |
 | Zsh | 세션 | `~/.zsh_sessions` | `~/.local/state/zsh/sessions` |
 | Zsh | 자동완성 캐시 | `~/.zcompdump*` | `~/.config/zsh/` |
+
+참고: 일부 도구가 XDG 경로를 지원하지 않으면 `~` 아래에 레거시 경로를 다시 만들 수 있습니다.
 
 ---
 
