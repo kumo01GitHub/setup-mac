@@ -205,11 +205,11 @@ source ~/.config/zsh/.zshrc
 ### mise で管理するツールチェーン
 
 - [`ruby@latest`](https://www.ruby-lang.org/)
-- [`node@latest`](https://nodejs.org/)
+- [`node@lts`](https://nodejs.org/)
 - [`python@latest`](https://www.python.org/)
-- [`java@latest`](https://openjdk.org/)
+- [`java@lts`](https://openjdk.org/)
 - [`gradle@latest`](https://gradle.org/)
-- [`flutter@latest`](https://flutter.dev/)
+- [`flutter@stable`](https://flutter.dev/)
 
 ---
 

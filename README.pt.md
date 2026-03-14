@@ -201,11 +201,11 @@ Os itens desta seção podem incluir ferramentas, apps e extensões opcionais ge
 ### Toolchains gerenciados por `mise`
 
 - [`ruby@latest`](https://www.ruby-lang.org/)
-- [`node@latest`](https://nodejs.org/)
+- [`node@lts`](https://nodejs.org/)
 - [`python@latest`](https://www.python.org/)
-- [`java@latest`](https://openjdk.org/)
+- [`java@lts`](https://openjdk.org/)
 - [`gradle@latest`](https://gradle.org/)
-- [`flutter@latest`](https://flutter.dev/)
+- [`flutter@stable`](https://flutter.dev/)
 
 ---
 

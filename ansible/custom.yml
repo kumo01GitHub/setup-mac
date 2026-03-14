@@ -26,11 +26,11 @@ mise_plugins_extra:
   - flutter
 
 mise_toolchains_extra:
-  - node@latest
+  - node@lts
   - python@latest
-  - java@latest
+  - java@lts
   - gradle@latest
-  - flutter@latest
+  - flutter@stable
 
 # Optional VS Code extensions
 vscode_extensions_list_extra:
