@@ -116,7 +116,6 @@ Exemplo: `ansible/custom.yml`
 
 ```yaml
 homebrew_packages_extra:
-    - ripgrep
 
 homebrew_cask_apps_extra:
     - firefox

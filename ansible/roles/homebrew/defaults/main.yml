@@ -8,6 +8,7 @@ homebrew_packages:
   - bat
   - dockutil
   - eza
+  - ripgrep
   - ansible
   - starship
   - mise

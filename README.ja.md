@@ -113,7 +113,6 @@ ansible-playbook site.yml -e git_user_name="Your Name" -e git_user_email="your.e
 
 ```yaml
 homebrew_packages_extra:
-  - ripgrep
 
 homebrew_cask_apps_extra:
   - firefox

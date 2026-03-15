@@ -10,6 +10,7 @@ alias ll='eza -la'
 alias la='eza -a'
 alias l='eza'
 alias diff='delta'
+alias grep='rg'
 
 # XDG preferred paths for tools (XDG variables are set in ~/.zshenv)
 
